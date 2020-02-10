@@ -5,7 +5,7 @@
 
 ### INITIAL SETUP----
 ## Setting Working Directory
-fdir = "C:\\Users\\Bryan\\Google Drive\\TSMVisualization\\"
+fdir = "/Volumes/GoogleDrive/Shared drives/TrEnCh/TSMVisualization/"
 setwd(fdir)
 
 ## Packages needed for TSM
@@ -14,7 +14,7 @@ install.packages(pkgst)
 lapply(pkgst, library, character.only = TRUE)
 
 ## Dataframe containing perrtaining information for Class Lepidosauria
-lizardsdf <- readRDS("Data\\Lepidosauria.Rda")
+lizardsdf <- readRDS("Data/Lepidosauria.Rda")
 attach(lizardsdf)
 Binomial
 Synonym
@@ -291,12 +291,12 @@ tsmshd = function(org,shade,substrate="Soil",depth=0,month=1:12){
   
   
   #Uploading shapefile
-  shp <- list.files("Data\\Ranges\\REPTILES\\Files", pattern="\\.shp$")
+  shp <- list.files("Data/Ranges/REPTILES/Files", pattern="/.shp$")
   shp <- gsub(".shp", "", shp) #Comparing to list of shapefiles for all reptiles
   name <<- ifelse(org%in%shp==T,org, #Using the correct name to upload the shapefile
                   ifelse(lizardsdf$Synonym[lizardsdf$Binomial==org]%in%shp==T,as.character(lizardsdf$Synonym[lizardsdf$Binomial==org]),
                          ifelse(lizardsdf$Accepted[lizardsdf$Binomial==org]%in%shp==T,as.character(lizardsdf$Accepted[lizardsdf$Binomial==org],NA))))
-  shape <<- readOGR(dsn="Data\\Ranges\\REPTILES\\Files", name)
+  shape <<- readOGR(dsn="Data/Ranges/REPTILES/Files", name)
   crs(shape) <<- crs("+init=epsg:4326") #Changing projection to better match other spatial objects
   
   
@@ -304,24 +304,24 @@ tsmshd = function(org,shade,substrate="Soil",depth=0,month=1:12){
   crp <- function(x)crop(x,extent(shape)) #Function for cropping & masking
   mas <- function(x)mask(x,shape) #Using them individually because lists make things more complicated
   
-  ncfiletg <- unlist(paste("Data\\Microclim\\",shade,"_","shade","\\","D",depth,"cm","_",substrate,"_",
+  ncfiletg <- unlist(paste("Data/Microclim/",shade,"_","shade","/","D",depth,"cm","_",substrate,"_",
                            shade,"_",month,".nc",sep="",collapse=NULL)) #Ground Temperature
   Tg <- lapply(ncfiletg,brick)
   Tg <- lapply(Tg, crp)
   Tg <- lapply(Tg, mas)
   
-  ncfileta <- unlist(paste("Data\\Microclim\\",shade,"_","shade","\\","TA1cm","_",substrate,"_",
+  ncfileta <- unlist(paste("Data/Microclim/",shade,"_","shade","/","TA1cm","_",substrate,"_",
                            shade,"_",month,".nc",sep="",collapse=NULL)) #Air Temperature
   Ta <- lapply(ncfileta,brick)
   Ta <- lapply(Ta, crp)
   Ta <- lapply(Ta, mas)
   
-  ncfilews <- unlist(paste("Data\\Microclim\\wind_speed_ms_1cm\\V1cm_",month,".nc",sep="")) #Wind Speed
+  ncfilews <- unlist(paste("Data/Microclim/wind_speed_ms_1cm/V1cm_",month,".nc",sep="")) #Wind Speed
   u <- lapply(ncfilews,brick)
   u <- lapply(u, crp)
   u <- lapply(u, mas)
   
-  ncfileza <- unlist(paste("Data\\Microclim\\zenith_angle\\ZEN_",month,".nc",sep="")) #Zenith Amgle
+  ncfileza <- unlist(paste("Data/Microclim/zenith_angle/ZEN_",month,".nc",sep="")) #Zenith Amgle
   psi <- lapply(ncfileza,brick)
   psi <- lapply(psi, crp)
   psi <- lapply(psi,mas)
@@ -335,7 +335,7 @@ tsmshd = function(org,shade,substrate="Soil",depth=0,month=1:12){
   
   mass <- lizardsdf$Mass[lizardsdf$Binomial==org] #Mass in g
   
-  elevation <- raster("Data\\Elevation\\ETOPO1_Ice_g_gmt4.grd") #Obtained elevation from NOAA
+  elevation <- raster("Data/Elevation/ETOPO1_Ice_g_gmt4.grd") #Obtained elevation from NOAA
   elevation <- resample(elevation, Ta[[1]], method='bilinear') #Making rasters match more closely
   elevation <- replicate(12,elevation) #The function does not work without a list (not sure 100% why....)
   elevation <- lapply(elevation, crp)
@@ -401,7 +401,7 @@ tsmshd = function(org,shade,substrate="Soil",depth=0,month=1:12){
   Tsmdf <<- arrange(transform(Tsmdf, Month=factor(Month,levels=names(month))),Month) #And order of months
   
 
-  filename <- paste("TSMdfs\\",sub(" ","_",org),"_",shade,".Rda",sep="")
+  filename <- paste("TSMdfs/",sub(" ","_",org),"_",shade,".Rda",sep="")
   save(Tsmdf,file=filename)
   
   return()
