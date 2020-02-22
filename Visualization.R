@@ -49,6 +49,12 @@ Tsm100$Shade <- c("Covered")
 #Making a bigger one? for better plotting
 Tsmdf_plot <- rbind(Tsm0,Tsm100)
 
+levels(Tsmdf_plot$Hour)
+combined <- fread(paste("TSMdfs\\",gsub(" ","_",org),"_combined.csv", sep= ""))
+
+neworder2 <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
+
+levels(combined$Hour) = neworder2
 
 ### NOW PLOTTING----
 
@@ -59,6 +65,17 @@ Tsmdf_plot <- rbind(Tsm0,Tsm100)
 ggplot(subset(Tsmdf_plot,Month==mnth),aes(x=Tsm,y= Hour)) + geom_density_ridges2(aes(fill=Scenario),rel_min_height = 0.01 ,scale=2,alpha=0.5) + ggtitle(paste(org,"|",mnth)) + scale_y_discrete(limits = rev(levels(Tsmdf_plot$Hour)))  + theme_bw() + facet_wrap(~Shade) 
 
 ggsave(paste(gsub(" ","_",org),"d1.png"))
+
+
+
+ggplot(data = subset(Tsmdf_plot,Month==mnth),aes(x=Tsm, y= Hour)) + geom_rect(data = rects, aes(ymin = 0, ymax = 20, xmin = xstart, xmax = xend, fill = "red"), alpha = 1) + 
+  geom_density_ridges2(aes(fill=Scenario),rel_min_height = 0.01 ,scale=2,alpha=0.5) + ggtitle(paste(org,"|",mnth)) 
+
+
+ggplot() + geom_rect(aes(xmin = -40, xmax = 0, ymin = 0, ymax = 15), fill = "red", alpha = 0.5)
+
+rects <- data.frame(xstart = 0, xend = 10, col = "red")
+
 
 #2 Single month divided by scenairo and shade
 #HOURS: all for y axis, TSM: all for x axis, MONTH: only one, SCENARIO: facet_wrap, SHADE: fill, CATEGORY: NA
@@ -87,11 +104,32 @@ ggplot() +
 ggsave(paste(gsub(" ","_",org),"_",mnth,"_",hr,"_",scn,"d.png"))
 
 
+
+#1 using the non long formatted data
+Tsmdf_plot <- fread(paste("TSMdfs\\",gsub(" ","_",org),"_combined_nonlong.csv", sep= ""))
+
+Tsmdf_plot <- subset(Tsmdf_plot, Month==mnth & Scenario==scn)
+
+ggplot() + 
+  borders(fill="grey",colour="black") +  
+  ggtitle(paste(org, "|",mnth,"|",hr,"|",scn))  + 
+  geom_raster(data=Tsmdf_plot, aes(x = x, y = y, fill = `04 PM`), interpolate = TRUE) + 
+  facet_wrap(~Shade )  + 
+  coord_quickmap(xlim = c(min(Tsmdf_plot$x), max(Tsmdf_plot$x)), ylim = c(min(Tsmdf_plot$y), max(Tsmdf_plot$y)),expand = TRUE) + 
+  theme_bw( )
+
+
+
+
+
+
+
+
 #2 Similar
 ggplot() + 
   borders(fill="grey",colour="black") +  
   ggtitle(paste(org, "|",mnth,"|",hr,"|",shd))  + 
-  scale_fill_manual(values = c("green4","yellow","orange","red")) +
+ 
   geom_raster(data=subset(Tsmdf_plot,Hour==hr & Month==mnth & Shade==shd), aes(x = x, y = y, fill = Tsm) , interpolate = TRUE) + 
   facet_wrap(~Scenario )  + 
   coord_quickmap(xlim = c(min(Tsmdf_plot$x), max(Tsmdf_plot$x)), ylim = c(min(Tsmdf_plot$y), max(Tsmdf_plot$y)),expand = TRUE) + 

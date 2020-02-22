@@ -10,7 +10,7 @@ setwd(fdir)
 
 ## Packages needed for TSM
 pkgsd <- c('pdftools','tidyverse','taxize')
-install.packages(pkgsd)
+#install.packages(pkgsd)
 lapply(pkgsd, library, character.only = TRUE)
 
 
