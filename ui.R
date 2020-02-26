@@ -1,7 +1,9 @@
 pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2','taxize', 'magrittr', 'TrenchR', 'ggplot2','ggridges','plotly', 'data.table', 'leaflet', 'shinyjs')
 lapply(pkgs, library, character.only = TRUE)
 #setwd("C:\\Users\\Bryan\\Google Drive\\TSMVisualization\\")
-setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
+#setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
+setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
+
 month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
 scenarios <- c("Normal","+1.5 °C","+2 °C")
