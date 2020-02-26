@@ -1,6 +1,7 @@
 pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2','taxize', 'magrittr', 'TrenchR', 'ggplot2','ggridges','plotly', 'data.table', 'leaflet', 'shinyjs')
 lapply(pkgs, library, character.only = TRUE)
-setwd("C:\\Users\\Bryan\\Google Drive\\TSMVisualization\\")
+#setwd("C:\\Users\\Bryan\\Google Drive\\TSMVisualization\\")
+setwd("\\Volumes\\GoogleDrive\\Shared Drives\\TrEnCh\\TSMVisualization\\TSMdfs")
 
 month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
