@@ -16,7 +16,7 @@ shinyUI <- fluidPage (
   titlePanel("Thermal Safety Margin"),
   
   mainPanel(
-    h3("Map (only the first four species work)"),
+    h3("Map (only the first seven species work)"),
     
     fluidRow(
       column(8, selectInput("select_species", label = "Species", choices = org, selected = "Coleonyx brevis")),
