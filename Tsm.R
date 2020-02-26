@@ -246,7 +246,7 @@ therm_safety_margin = function(org,shade,substrate="Soil",depth=0,month=1:12){
 
 #This is for presentation only to be used as a list for both functions
 #Can have any name
-org <- c("Takydromus sexlineatus","Coleonyx brevis","Holbrookia maculata","Lepidophyma flavimaculatum","Petrosaurus mearnsi","Platysaurus intermedius","Psammodromus hispanicus","Sceloporus magister","Tiliqua rugosa","Urosaurus ornatus")
+org <- c("Takydromus sexlineatus","Coleonyx brevis","Holbrookia maculata","Lepidophyma flavimaculatum", "Psammodromus algirus", "Sceloporus undulatus", "Cophosaurus texanus", "Petrosaurus mearnsi","Platysaurus intermedius","Psammodromus hispanicus","Sceloporus magister","Tiliqua rugosa","Urosaurus ornatus")
 
 org <- c("Takydromus sexlineatus")
 
@@ -319,6 +319,8 @@ mapply(complete_df, org)
 
 
 #mydatabase <- src_sqlite("TSM data", create = TRUE)
+
+setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
 
 for(i in 1:length(org)) {
   name <- paste(sub(" ","_",org[i]),"_combined" ,sep="")
