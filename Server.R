@@ -4,7 +4,7 @@ scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
 
 #setwd("\\Volumes\\GoogleDrive\\Shared Drives\\TrEnCh\\TSMVisualization\\TSMdfs")
-setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/TSMdfs")
+#setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/TSMdfs")
 
 my_db <- src_sqlite("TSM data", create = FALSE)
 
@@ -19,13 +19,14 @@ shinyServer <- function(input, output) {
   # })
    
   
-  # Method 2: fread from csv
-  # data_by_org <- reactive({
-  # 
-  #   org <- input$select_species
-  #   filename <- paste("TSMdfs\\",gsub(" ","_",org),"_combined.csv", sep= "")
-  #   df <- data.table::fread(filename)
-  # })
+  #Method 2: fread from csv
+  data_by_org <- eventReactive( input$run,{
+
+    org <- input$select_species
+    filename <- paste("Data\\",gsub(" ","_",org),"_combined.csv", sep= "")
+    df <- data.table::fread(filename)
+  }, ignoreNULL = FALSE
+  )
   
   
   # Method 3: RDS file
@@ -47,15 +48,15 @@ shinyServer <- function(input, output) {
   #   a
   # })
   
-  # Method 5: database using src_sqlite
-  dataInput <- eventReactive( input$run, {
-    mm <- names(month[as.numeric(input$select_month)])
-    org <- input$select_species
-    tbl(my_db, paste(sub(" ","_",org), "_combined", sep = "")) %>% 
-      filter(Hour %in% local(input$select_hour) & Month %in% mm & Scenario %in% local(input$select_scenario) & Shade %in% local(input$select_shade)) %>%
-      tbl_df()
-  }, ignoreNULL = FALSE
-  )
+  # # Method 5: database using src_sqlite
+  # dataInput <- eventReactive( input$run, {
+  #   mm <- names(month[as.numeric(input$select_month)])
+  #   org <- input$select_species
+  #   tbl(my_db, paste(sub(" ","_",org), "_combined", sep = "")) %>% 
+  #     filter(Hour %in% local(input$select_hour) & Month %in% mm & Scenario %in% local(input$select_scenario) & Shade %in% local(input$select_shade)) %>%
+  #     tbl_df()
+  # }, ignoreNULL = FALSE
+  # )
   
   
   # data_by_org <- tbl(my_db, paste(sub(" ","_",org), "_combined", sep = "")) %>%
@@ -107,13 +108,23 @@ shinyServer <- function(input, output) {
   })
   
 
-  # dataInput <- reactive({
-  #   data_by_org() %>% filter(Hour %in% input$select_hour & Month %in% names(month[as.numeric(input$select_month)]) & Scenario %in% input$select_scenario & Shade %in% input$select_shade)
-  # })
+  dataInput <- eventReactive( input$run,{
+    data_by_org() %>% filter(Hour %in% input$select_hour & Month %in% names(month[as.numeric(input$select_month)]) & Scenario %in% input$select_scenario & Shade %in% input$select_shade)
+  }, ignoreNULL = FALSE
+  )
   
   # dataInput_2 <- reactive({
   #   data_by_org_2() %>% filter(Month %in% names(month[as.numeric(input$select_month_2)]))
   # })
+  
+  
+  dataTPC <- reactive({
+    org <- input$select_species_tpc
+    filename <- paste("Data\\",gsub(" ","_",org),"_combined.csv", sep= "")
+    df <- data.table::fread(filename)
+    df <- df %>% filter(Hour %in% input$select_hour_tpc & Month %in% names(month[as.numeric(input$select_month_tpc)]) & Scenario %in% input$select_scenario_tpc & Shade %in% input$select_shade_tpc)
+    41.6 - mean(df$Tsm)
+  })
   
   x_variable <- eventReactive( input$run, {
     switch(input$columns, Month = "factor(Month, levels = names(month))", Hour = "Hour", Scenario = "Scenario", Shade = "Shade")
@@ -175,6 +186,17 @@ shinyServer <- function(input, output) {
   }, height = 600, width = 900)
     
   
+
+  output$TPC <- renderPlot({
+    lizards_curve <- subset(lizardsdf, !is.na(lizardsdf$tmin) & !is.na(lizardsdf$Topt))
+    lizards_curve <- lizards_curve[lizards_curve$Binomial == input$select_species_tpc, ]
+    curve_ex1 <- TPC(0:50, as.numeric(as.character(lizards_curve[1,]$Topt)), as.numeric(as.character(lizards_curve[1,]$tmin)), as.numeric(as.character(lizards_curve[1,]$Tmax)))
+    
+    ggplot(data = NULL, aes(x = c(0:50), y = curve_ex1)) + geom_line(col = "steelblue", size = 1.2) + xlab("Temperature (°C)") + ylab("Performance") +
+      geom_vline(xintercept = dataTPC(), size = 1.2) +
+      theme(plot.title = element_text(size = 16), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12), legend.title = element_text(size = 12))
+    
+  })
   
   output$plot2 <- renderPlot({
     

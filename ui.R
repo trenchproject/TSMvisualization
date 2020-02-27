@@ -2,7 +2,7 @@ pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2',
 lapply(pkgs, library, character.only = TRUE)
 #setwd("C:\\Users\\Bryan\\Google Drive\\TSMVisualization\\")
 #setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
-setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
+#setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
 
 month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
@@ -10,6 +10,8 @@ scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
 org <- c("Takydromus sexlineatus","Coleonyx brevis","Holbrookia maculata","Lepidophyma flavimaculatum", "Psammodromus algirus", "Sceloporus undulatus", "Cophosaurus texanus", "Petrosaurus mearnsi","Platysaurus intermedius","Psammodromus hispanicus","Sceloporus magister","Tiliqua rugosa","Urosaurus ornatus")
 variables <- c("Month", "Hour", "Scenario", "Shade")
+
+lizards_curve <- subset(lizardsdf, !is.na(lizardsdf$tmin) & !is.na(lizardsdf$Topt))
 
 
 
@@ -27,8 +29,8 @@ shinyUI <- fluidPage (
     hr(),
     
     fluidRow(
-      column(4, radioButtons("rows", label = "Columns", choices = variables, inline = TRUE)),
-      column(4, offset = 1, radioButtons("columns", label = "Rows", choices = variables, selected = "Hour", inline = TRUE))
+      column(4, radioButtons("rows", label = "Horizontal facets", choices = variables, inline = TRUE)),
+      column(4, offset = 1, radioButtons("columns", label = "Vertical facets", choices = variables, selected = "Hour", inline = TRUE))
       
     ),
 
@@ -65,6 +67,25 @@ shinyUI <- fluidPage (
     hr(),
     
     h3("Plot"),
+    
+    fluidRow(
+      column(5, selectInput("select_month_tpc", label = "Month", choices = month, selected = 1)),
+      column(5, selectInput("select_hour_tpc", label = "Hour", choices = hours, selected = "01 PM"))
+    ),
+    
+    
+    fluidRow(
+      column(5, radioButtons("select_scenario_tpc", label = "Scenario", choices = scenarios, selected = "Normal")),
+      column(5, radioButtons("select_shade_tpc", label = "Shade", choices = c("Covered", "Exposed"), selected = "Covered")),
+    ),
+    
+    fluidRow(
+      column(6, selectInput("select_species_tpc", label = "Species", choices = lizards_curve$Binomial))
+    ), 
+    
+    fluidRow(
+      column(12, plotOutput("TPC"))
+    ),
     
     fluidRow(
       column(8, selectInput("select_species_2", label = "Species", choices = org, selected = "Coleonyx brevis")),
