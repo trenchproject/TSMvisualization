@@ -2,16 +2,21 @@ pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2',
 lapply(pkgs, library, character.only = TRUE)
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
+#setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
 
 month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
 scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
-org <- c("Takydromus sexlineatus","Coleonyx brevis","Psammodromus hispanicus", "Holbrookia maculata","Lepidophyma flavimaculatum", "Psammodromus algirus", "Sceloporus undulatus", "Cophosaurus texanus", "Petrosaurus mearnsi","Platysaurus intermedius","Psammodromus hispanicus","Sceloporus magister","Tiliqua rugosa","Urosaurus ornatus")
+
+org_tpc <- c("Psammodromus hispanicus", "Psammodromus algirus", "Xantusia vigilis", "Lacerta agilis", "Elgaria multicarinata", "Lepidophyma flavimaculatum", 
+             "Ctenotus taeniolatus", "Hemiergis decresiensis", "Dipsosaurus dorsalis", "Ctenotus regius", "Ctenotus uber", "Eulamprus kosciuskoi", 
+             "Sphaerodactylus nicholsi", "Platysaurus intermedius", "Takydromus sexlineatus")
+org <- c(org_tpc, "Coleonyx brevis")
+
 variables <- c("Month", "Hour", "Scenario", "Shade")
 
-#lizards_tpc <- fread("lizards_tpc.csv")
-
+lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyUI <- fluidPage (
@@ -42,17 +47,14 @@ shinyUI <- fluidPage (
           fluidRow(
             column(2, actionButton("map_onoff", "Show/Hide map")),
             column(2, offset = 4, actionButton("run", "Run"))
-            
           ),
         ),
         mainPanel(
-        
           fluidRow(
             column(12, plotOutput("plot1", width = "100%"))
           ), 
           
           br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
-          
         
           fluidRow(
             column(8, leafletOutput("mymap"))
@@ -66,13 +68,12 @@ shinyUI <- fluidPage (
     tabPanel("Thermal Performance Curve",
       sidebarLayout(
         sidebarPanel(
-    
           h3("Thermal performance curve"),
-          p("Select a species to look at their thermal performance curve and how varying environmental conditions affects their performance."),
-          selectInput("species_tpc", label = "Species", choices = lizards_tpc$Binomial), 
+          p("Select a species to look at their thermal performance curve and how varying environmental conditions affect their performance."),
+          
+          selectInput("species_tpc", label = "Species", choices = org_tpc), 
           selectInput("month_tpc", label = "Month", choices = month, selected = 1),
           selectInput("hour_tpc", label = "Hour", choices = hours, selected = "01 PM"),
-          
           
           fluidRow(
             column(6, radioButtons("scenario_tpc", label = "Scenario", choices = scenarios, selected = "Normal")),
@@ -81,7 +82,7 @@ shinyUI <- fluidPage (
         ),
         
         mainPanel(
-          br(),
+          br(), br(), br(), br(),
           plotOutput("TPC")
         )
       ),
@@ -92,6 +93,8 @@ shinyUI <- fluidPage (
       sidebarLayout(
         sidebarPanel(
           h3("Plot"),
+          p("Select a species to look at the change in thermal safety margins throughout the day in different months."),
+          p("The shapes on the plot represent the variation of TSM within the species due to the varying habitats of individuals."),
           
           selectInput("species_2", label = "Species", choices = org, selected = "Coleonyx brevis"),
           
@@ -107,27 +110,33 @@ shinyUI <- fluidPage (
       )
     ),
     
-    tabPanel("Data", 
+    tabPanel("Raw Data", 
       sidebarLayout(
         sidebarPanel(
-          h3("Data"),
+          h3("Raw Data"),
+          p("Get the numric data on thermal safety margins here."),
+          p("Select \"Annual\" and set TSM to 100 to see all our data."),
           
           selectInput("species_data", label = "Species", choices = org, selected = "Coleonyx brevis"),
           
-          selectInput("month_data", label = "Month", choices = month),
-          selectInput("hour_data", label = "Hour", choices = hours, selected = "01 PM"),
+          hr(),
           
+          h5("Show results for"),
+          
+          selectInput("month_data", label = "Month", choices = c(month, "Annual")),
+
+          numericInput("value", label = "TSM Less than", value = 0),
           
           fluidRow(
             column(6, radioButtons("scenario_data", label = "Scenario", choices = scenarios, selected = "Normal")),
             column(6, radioButtons("shade_data", label = "Shade", choices = c("Covered", "Exposed"), selected = "Covered")),
           )
         ),
-          
-        
         
         mainPanel(
-          textOutput("text_data")
+          br(),
+          h4("Mean thermal safety margins across the distibution"),
+          htmlOutput("text_data")
         )
       )
     )

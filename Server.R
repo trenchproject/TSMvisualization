@@ -5,7 +5,7 @@ hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 A
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/TSMdfs")
 
-#lizards_tpc <- fread("lizards_tpc.csv")
+lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyServer <- function(input, output) {
@@ -129,9 +129,8 @@ shinyServer <- function(input, output) {
   
   dataTPC <- reactive({
     org <- input$species_tpc
-    filename <- paste("Data\\",gsub(" ","_",org),"_combined.csv", sep= "")
-    df <- data.table::fread(filename)
-    df <- df %>% filter(Hour %in% input$hour_tpc & Month %in% names(month[as.numeric(input$month_tpc)]) & Scenario %in% input$scenario_tpc & Shade %in% input$shade_tpc)
+    filename <- paste("Data\\",gsub(" ","_",org),"_combined.rds", sep= "")
+    df <- readRDS(filename) %>% filter(Hour %in% input$hour_tpc & Month %in% names(month[as.numeric(input$month_tpc)]) & Scenario %in% input$scenario_tpc & Shade %in% input$shade_tpc)
     lizards_tpc[lizards_tpc$Binomial == input$species_tpc, Tmax] - mean(df$Tsm)
   })
   
@@ -204,7 +203,7 @@ shinyServer <- function(input, output) {
     
     ggplot() + geom_line(data = NULL, aes(x = c(0:pmax(50, dataTPC())), y = curve), col = "steelblue", size = 1.2) + xlab("Temperature (°C)") + ylab("Performance") +
       geom_segment(aes(x = lizards_tpc$Tmax - 5, y = 0.1, xend = lizards_tpc$Tmax, yend = 0), size = 1) + geom_text(aes(x = lizards_tpc$Tmax - 6, y = 0.14, label = "Tmax"), size = 5) +
-      geom_vline(xintercept = dataTPC(), size = 1.2) + geom_text(aes(x = dataTPC() -1, label = "Operative temperature", y = 0.45), size = 5, angle = 90) + theme_classic( ) +
+      geom_vline(xintercept = dataTPC(), size = 1.2) + geom_text(aes(x = dataTPC() - 1.7, label = "Operative temperature", y = 0.45), size = 5, angle = 90) + theme_classic( ) +
       geom_rect(aes(xmin = lizards_tpc$Tmax, xmax = Inf, ymin = -Inf, ymax = Inf), alpha = 0.7, fill = "red") +
       scale_x_continuous(limits = c(0,pmax(50, dataTPC())+2), expand = c(0,0)) + scale_y_continuous(limits = c(0, 1.05), expand = c(0,0)) +
       theme(axis.text = element_text(size = 12), axis.title = element_text(size = 15))
@@ -233,7 +232,63 @@ shinyServer <- function(input, output) {
     
   }, height = 600, width = 600)  
   
-  output$text_data <- renderText({
+  
+  data_by_org_data <- reactive({
     
+    org <- input$species_data
+    org <- "Coleonyx brevis"
+    filename <- paste("Data\\",gsub(" ","_",org),"_combined.rds", sep= "")
+    df <- readRDS(filename)
+    df$Month <- factor(df$Month, levels = names(month))
+    df$Hour <- factor(df$Hour, levels = hours)
+    df$Scenario <- factor(df$Scenario, levels = scenarios)
+    df
+  })
+  
+  
+  dataInput_data <- reactive({
+    if(input$month_data == "Annual") {
+      data_by_org_data() %>% filter(Scenario %in% input$scenario_data & Shade %in% input$shade_data)
+      
+    } else {
+      data_by_org_data() %>% filter(Month %in%  names(month[as.numeric(input$month_data)]) & Scenario %in% input$scenario_data & Shade %in% input$shade_data)
+    }
+  })
+  
+  output$text_data <- renderText({
+    str <- ""
+    if(input$month_data == "Annual") {
+      for(m in 1:12){
+        count = 0
+        for (hour in 1:length(hours)) {
+          average <- mean(dataInput_data()[(dataInput_data()$Month == names(month[m])) & (dataInput_data()$Hour == hours[hour]), "Tsm"])
+          if (average < input$value) {
+            count = count + 1
+            add <- paste(hours[hour], ": ", round(average, digits = 2), "°C")
+            if (count == 1) {
+              add <- HTML(paste('<b>', names(month)[m], '</b>', add, sep = '<br/>'))
+            }
+            str <- paste(str, add)
+            str <- HTML(paste(str, "", sep = '<br/>'))
+          }
+        }
+      }
+    } else {
+      for (hour in 1:length(hours)) {
+        average <- mean(dataInput_data()[dataInput_data()$Hour == hours[hour], "Tsm"])
+        if (average < input$value) {
+          str <- paste(str, hours[hour], ": ", round(average, digits = 2), "°C")
+          str <- HTML(paste(str, "", sep = '<br/>'))
+        } 
+      }
+    }
+    if(str == "") {
+      str = "No data" 
+    }
+    if(input$month_data != "Annual") {
+      str <- HTML(paste("<b>", names(month[as.numeric(input$month_data)]), "</b>", str, sep = '<br/>'))
+    }
+    str
   })
 }
+

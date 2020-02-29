@@ -95,26 +95,55 @@ Synonym
 
 
 #Uploading shapefile
-shp <- list.files("Data\\Ranges\\REPTILES\\Files", pattern="\\.shp$")
+shp <- list.files("Data\\Updated\\REPTILES", pattern="\\.shp$")
 shp <- gsub(".shp", "", shp) #Comparing to list of shapefiles for all reptiles
 
 rho_S <- 0.7 #Specified in the same function (DOUBLECHECK)
 doy <- list(15,45,75,105,135,165,195,225,255,285,315,345) #Day of year for each month (DOUBLE CHECK)
 
 
-##Full exposure to sun (0% shade)
-therm_safety_margin = function(org,shade,substrate="Soil",depth=0,month=1:12){
+complete_df <- function(org) {
   
-  # substrate="Soil"
-  # depth=0
-  # month=1:12
+  begin = proc.time()
+  setwd("C:\\Users\\Bryan\\Google Drive\\TSMVisualization\\")
+  
+  cat("Starting \"Exposed\"\n\n")
+  
+  exposed <- therm_safety_margin(org, 0, begin)
+  
+  cat("Starting \"Covered\". Exposed took", timetaken(started.at = begin), "\n\n" )
+  covered <- therm_safety_margin(org, 100, begin)
+  combined <- rbind(exposed, covered)
+
+  setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
+  
+  filename <- paste("Data\\",sub(" ","_",org),"_combined.rds",sep="")
+  saveRDS(combined,file=filename)
+  
+  #filenamedf <- paste("TSMdfs\\",sub(" ","_",org),"_combined.csv",sep="")
+  #write.csv(combined,filenamedf)
+  #fwrite(combined, filenamedf)
+  #saveRDS(combined, filenamedf)
+  cat("Process complete. \nOverall:", timetaken(started.at = begin))
+  return ()
+}  
+
+therm_safety_margin = function(org, shade, begin, substrate="Soil", depth=0, month=1:12){
+
   # shade = 0
-  name <<- ifelse(org%in%shp==T,org, #Using the correct name to upload the shapefile
+  # substrate = "soil"
+  # depth = 0
+  # month = 1:12
+  name <- ifelse(org%in%shp==T,org, #Using the correct name to upload the shapefile
                   ifelse(lizardsdf$Synonym[lizardsdf$Binomial==org]%in%shp==T,as.character(lizardsdf$Synonym[lizardsdf$Binomial==org]),
                          ifelse(lizardsdf$Accepted[lizardsdf$Binomial==org]%in%shp==T,as.character(lizardsdf$Accepted[lizardsdf$Binomial==org],NA))))
-  shape <<- readOGR(dsn="Data\\Ranges\\REPTILES\\Files", name)
+  
+  cat("Now, reading shapefile.\n\n")
+  
+  shape <- readOGR(dsn="Data\\Updated\\REPTILES", name)
   crs(shape) <- crs("+init=epsg:4326") #Changing projection to better match other spatial objects
   
+  cat("Done reading shape file. So far, ",timetaken(started.at = begin), "\n\nNow reading files for variables\n\n")
   
   #Microclimate data
   crp <- function(x)crop(x,extent(shape)) #Function for cropping & masking
@@ -140,11 +169,11 @@ therm_safety_margin = function(org,shade,substrate="Soil",depth=0,month=1:12){
   psi <- crop_mask(ncfileza)
   
   #Calculating information relevant to the lizard only
-  ctmax <<- lizardsdf$Tmax[lizardsdf$Binomial==org] #Critical Thermal Maximum
+  ctmax <- lizardsdf$Tmax[lizardsdf$Binomial==org] #Critical Thermal Maximum
   
-  svl <<- as.numeric(lizardsdf$SVL[lizardsdf$Binomial==org]) #SVL in mm
+  svl <- as.numeric(lizardsdf$SVL[lizardsdf$Binomial==org]) #SVL in mm
   
-  mass <<- lizardsdf$Mass[lizardsdf$Binomial==org] #Mass in g
+  mass <- lizardsdf$Mass[lizardsdf$Binomial==org] #Mass in g
   
   
   elevation <- raster("Data\\Elevation\\ETOPO1_Ice_g_gmt4.grd") #Obtained elevation from NOAA
@@ -152,29 +181,28 @@ therm_safety_margin = function(org,shade,substrate="Soil",depth=0,month=1:12){
   elevation <- replicate(12,elevation) %>% #The function does not work without a list (not sure 100% why....)
     lapply(crp) %>% lapply(mas)
   
+  cat("Read all files for variables. So far,", timetaken(started.at = begin), "\n\nNow calculating TSM\n\n")
   
   #NORMAL CONDITIONS
   if(shade == 0) {
-    TeN <- mapply(Tb_lizard,Ta, Tg, u, svl, mass, psi, rho_S, elevation, doy, sun=TRUE, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
+    sun = TRUE
   } else {
-    TeN <- mapply(Tb_lizard,Ta, Tg, u, svl, mass, psi, rho_S, elevation, doy, sun=FALSE, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
+    sun = FALSE
   }
-  # elevation <- 500
-  # psi <- 50
-  # Ta <- 25
-  # Tg <- 30
-  # u <- 1
+  
+  TeN <- mapply(Tb_lizard,Ta, Tg, u, svl, mass, psi, rho_S, elevation, doy, sun=sun, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
   
   #TSM +1.5 °C SCENARIO
   Ta1 <- lapply(Ta,FUN=function(x){x+1.5}) #Adding the +1.5°C to air and substrate data
   Tg1 <- lapply(Tg,FUN=function(x){x+1.5})
-  Te1 <- mapply(Tb_lizard,Ta1, Tg1, u, svl, mass, psi, rho_S, elevation, doy, sun=TRUE, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
+  Te1 <- mapply(Tb_lizard,Ta1, Tg1, u, svl, mass, psi, rho_S, elevation, doy, sun=sun, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
   
   #TSM +2°C SCENARIO
   Ta2 <- lapply(Ta,FUN=function(x){x+2}) #Adding the +2°C to air and substrate data
   Tg2 <- lapply(Tg,FUN=function(x){x+2})
-  Te2 <- mapply(Tb_lizard,Ta2, Tg2, u, svl, mass, psi, rho_S, elevation, doy, sun=TRUE, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
+  Te2 <- mapply(Tb_lizard,Ta2, Tg2, u, svl, mass, psi, rho_S, elevation, doy, sun=sun, surface=TRUE, alpha_S=0.9, alpha_L=0.965, epsilon_s=0.965, F_d=0.8, F_r=0.5, F_a=0.5, F_g=0.5) #Running the function
   
+  cat("Calculated TSM for all scenarios. So far,", timetaken(started.at = begin), "\n\n")
   
   hours <- c("x","y", "12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM") 
   month <- c(1:12)
@@ -182,13 +210,7 @@ therm_safety_margin = function(org,shade,substrate="Soil",depth=0,month=1:12){
   
   #Rasters the input list to data frames, renames columns for future use, switch to long format 
   
-  TeN_temp <- lapply(TeN, FUN=function(x){ctmax-x})
-  
   process <- function(list, condition) {
-    # list <- TeN
-    # condition <- "Normal"
-    # output <- list %>% lapply(FUN=function(x){ctmax-x})
-    # output2 <- output %>% lapply(as.data.frame, xy=TRUE,na.rm=TRUE)
     output <- list %>% lapply(FUN=function(x){ctmax-x}) %>% lapply(as.data.frame, xy=TRUE,na.rm=TRUE)
     for (i in c(1:12)) {
       colnames(output[[i]]) <- hours
@@ -204,130 +226,49 @@ therm_safety_margin = function(org,shade,substrate="Soil",depth=0,month=1:12){
   Tsm1df <- process(Te1, "+1.5 °C")
   Tsm2df <- process(Te2, "+2 °C")
   
-  Tsmdf <<- rbind(TsmNdf,Tsm1df,Tsm2df) #Now combining all 3 scenarios into 1
+  Tsmdf <- rbind(TsmNdf,Tsm1df,Tsm2df) #Now combining all 3 scenarios into 1
   colnames(Tsmdf) <- c("x","y","Hour","Tsm","Month","Scenario") #Renaming all necessary columns
   
   # require(plyr)
   neworder <- c("Normal","+1.5 °C","+2 °C")
-  Tsmdf <<- arrange(transform(Tsmdf, Scenario=factor(Scenario,levels=neworder)),Scenario) #Rearraging orders of scenarios for plotting
+  Tsmdf <- arrange(transform(Tsmdf, Scenario=factor(Scenario,levels=neworder)),Scenario) #Rearraging orders of scenarios for plotting
   
   neworder2 <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
-  Tsmdf <<- arrange(transform(Tsmdf, Hour=factor(Hour,levels=neworder2)),Hour) #Order of hours
+  Tsmdf <- arrange(transform(Tsmdf, Hour=factor(Hour,levels=neworder2)),Hour) #Order of hours
    
-  Tsmdf <<- arrange(transform(Tsmdf, Month=factor(Month,levels=names(month))),Month) #And order of months
-  # 
-  # Tsmdf$Category <- NA #Creating this new column for categorical plotting of TSM
-  # Tsmdf$Category <- ifelse(Tsmdf$Tsm < 0, "< 0", 
-  #                           ifelse(Tsmdf$Tsm >= 0 & Tsmdf$Tsm < 1, "0-1",
-  #                                  ifelse(Tsmdf$Tsm >= 1 & Tsmdf$Tsm < 3, "1-3", 
-  #                                         ifelse(Tsmdf$Tsm >= 3, "> 3", NA))))
-  # neworder3 <- c("> 3","1-3","0-1","< 0")
-  # Tsmdf <<- arrange(transform(Tsmdf, Category=factor(Category,levels=neworder3)),Category) #Order of ThSaMa
+  Tsmdf <- arrange(transform(Tsmdf, Month=factor(Month,levels=names(month))),Month) #And order of months
   
   
   # filename <- paste("TSMdfs\\",sub(" ","_",org),"_",shade,".Rda",sep="")
   # save(Tsmdf,file=filename)
   
-  # print("Half way there: Rda file saved.")
-  # 
-  filenamedf <- paste("TSMdfs\\",sub(" ","_",org),"_",shade,".csv",sep="")
-  fwrite(Tsmdf, filenamedf)
+  # filenamedf <- paste("TSMdfs\\",sub(" ","_",org),"_",shade,".csv",sep="")
+  # fwrite(Tsmdf, filenamedf)
   # write.csv(Tsmdf,filenamedf)
   
-  
-  # filenamedf_rds <- paste("TSMdfs\\",sub(" ","_",org),"_",shade,".rds",sep="")
-  # saveRDS(Tsmdf, filenamedf_rds)
-  
-  
-  return("Complete. File successfully produced")
+  if (shade == 0) {
+    Tsmdf$Shade <- "Exposed"
+  } else {
+    Tsmdf$Shade <- "Covered"
+  }
+  return(Tsmdf)
 }
 
-### Calculating TSM ----
 
-#This is for presentation only to be used as a list for both functions
-#Can have any name
-org <- c("Takydromus sexlineatus","Coleonyx brevis","Holbrookia maculata","Lepidophyma flavimaculatum", "Psammodromus algirus", "Sceloporus undulatus", "Cophosaurus texanus", "Petrosaurus mearnsi","Platysaurus intermedius","Psammodromus hispanicus","Sceloporus magister","Tiliqua rugosa","Urosaurus ornatus")
+org <- c("Takydromus sexlineatus","Coleonyx brevis", "Psammodromus hispanicus", "Holbrookia maculata","Lepidophyma flavimaculatum", "Psammodromus algirus", "Sceloporus undulatus", "Cophosaurus texanus", "Petrosaurus mearnsi","Platysaurus intermedius","Psammodromus hispanicus","Sceloporus magister","Tiliqua rugosa","Urosaurus ornatus")
 
-org <- c("Takydromus sexlineatus")
+# All the organisms that have necessary data for TPC
+#  "Xantusia riversiana" doesn't work     small
+                   
+#   "Eulamprus tympanum"  "Sceloporus occidentalis"  "Sceloporus graciosus"  "Sphaerodactylus macrolepis"  meidum
 
-org <- c("Coleonyx brevis", "Holbrookia maculata")
-
-org <- "Coleonyx brevis"
-
-org <- c("Holbrookia maculata","Lepidophyma flavimaculatum")
-
-#This when only one organism
-# therm_safety_margin(org,0) #Always had to be 0
-# therm_safety_margin(org,100) #Always had to be 100
+# "Lacerta agilis" too big "Podarcis muralis"  "Anolis carolinensis"  "Uta stansburiana"  "Sceloporus variabilis"  "Takydromus septentrionalis"  "Pseudemoia entrecasteauxii"  big
 
 
-complete_df <- function(org) {
-  
-  
-  # spdata1 <- paste("TSMdfs\\",gsub(" ","_",org),"_0.Rda", sep= "")
-  # load(spdata1)
-  # Tsm0 <- Tsmdf
-  # Tsm0$Shade <- c("Exposed")
-  # spdata2 <- paste("TSMdfs\\",gsub(" ","_",org),"_100.Rda", sep= "")
-  # load(spdata2)
-  # Tsm100<- Tsmdf
-  # Tsm100$Shade <- c("Covered")
-  
-  # spdata1 <- paste("TSMdfs\\",gsub(" ","_",org),"_0.rds", sep= "")
-  # Tsm0 <- readRDS(spdata1)
-  # Tsm0$Shade <- c("Exposed")
-  # spdata2 <- paste("TSMdfs\\",gsub(" ","_",org),"_100.rds", sep= "")
-  # Tsm100 <- readRDS(spdata2)
-  # Tsm100$Shade <- c("Covered")
-  
-  
-  file0 <- paste("TSMdfs\\",gsub(" ","_",org),"_0.csv", sep= "")
-  Tsm0 <- fread(file0)
-  Tsm0$Shade <- c("Exposed")
-  
-  file100 <- paste("TSMdfs\\",gsub(" ","_",org),"_100.csv", sep= "")
-  Tsm100 <- fread(file100)
-  Tsm100$Shade <- c("Covered")
-  
-  
-  
-  combined <- rbind(Tsm0,Tsm100)
-  
-  # filename <- paste("TSMdfs\\",sub(" ","_",org),"_combined.Rda",sep="")
-  # save(combined,file=filename)
-  
-  
-  filenamedf <- paste("TSMdfs\\",sub(" ","_",org),"_combined.csv",sep="")
-  #write.csv(combined,filenamedf)
-  fwrite(combined, filenamedf)
-  #saveRDS(combined, filenamedf)
-  return ("Process complete")
-}  
 
+org <- c("Coleonyx brevis", "Takydromus sexlineatus", "Psammodromus hispanicus", "Psammodromus algirus", "Ctenotus regius")
 
-therm_safety_margin(org, 0)
-therm_safety_margin(org, 100)
+getwd()
+org <- 
 complete_df(org)
 
-df <- fread(filenamedf)
-unique(df$Shade)
-
-#This when multiple
-mapply(therm_safety_margin,org,0) #Always had to be 0
-mapply(therm_safety_margin,org,100) #Always has to be 100
-mapply(complete_df, org)
-
-
-#mydatabase <- src_sqlite("TSM data", create = TRUE)
-
-setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
-
-for(i in 1:length(org)) {
-  name <- paste(sub(" ","_",org[i]),"_combined" ,sep="")
-  data_to_add <- fread(paste("TSMdfs\\",sub(" ","_",org[i]),"_combined.csv",sep=""))
-  copy_to(mydatabase, data_to_add, name = name, temporary = FALSE, overwrite = TRUE)
-}
-my_db <- src_sqlite("TSM data", create = FALSE)
-
-src_tbls(my_db)
-length(org)

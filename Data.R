@@ -44,7 +44,7 @@ ectotherms$Topt[matched] <- Topt$newTopt[match1[matched]] #From synonym database
 
 
 ##Confirming presence of shapefiles to be used
-shp <- list.files("Data\\Ranges\\REPTILES\\Files", pattern="\\.shp$") 
+shp <- list.files("Data\\Updated\\REPTILES", pattern="\\.shp$") 
 #shp <- list.files("Data\\Ranges\\REPTILES\\Files", pattern="\\.shp$") 
 shp <- gsub(".shp", "", shp) #Replacing name strings for synonyms
 Shapefile1 <- ectotherms$Binomial%in%shp #Matching with directory files
@@ -102,3 +102,4 @@ saveRDS(lizardsdf,"Data\\Lepidosauria.Rda")
 write.csv(lizardsdf,"Data\\Lepidosauria.csv")
 #saveRDS(lizardsdf,"Data/Lepidosauria.Rda")
 #write.csv(lizardsdf,"Data/Lepidosauria.csv")
+
