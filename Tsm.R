@@ -124,8 +124,8 @@ complete_df <- function(org) {
   #write.csv(combined,filenamedf)
   #fwrite(combined, filenamedf)
   #saveRDS(combined, filenamedf)
-  cat("Process complete. \nOverall:", timetaken(started.at = begin))
-  return ()
+  done <- cat("Process complete. \nOverall:", timetaken(started.at = begin))
+  return (done)
 }  
 
 therm_safety_margin = function(org, shade, begin, substrate="Soil", depth=0, month=1:12){
@@ -262,13 +262,14 @@ org <- c("Takydromus sexlineatus","Coleonyx brevis", "Psammodromus hispanicus", 
                    
 #   "Eulamprus tympanum"  "Sceloporus occidentalis"  "Sceloporus graciosus"  "Sphaerodactylus macrolepis"  meidum
 
-# "Lacerta agilis" too big "Podarcis muralis"  "Anolis carolinensis"  "Uta stansburiana"  "Sceloporus variabilis"  "Takydromus septentrionalis"  "Pseudemoia entrecasteauxii"  big
-
+# "Lacerta agilis" too big 
 
 
 org <- c("Coleonyx brevis", "Takydromus sexlineatus", "Psammodromus hispanicus", "Psammodromus algirus", "Ctenotus regius")
 
+
 getwd()
-org <- 
-complete_df(org)
+org <- c("Podarcis muralis", "Anolis carolinensis", "Uta stansburiana", "Sceloporus variabilis", "Takydromus septentrionalis", "Pseudemoia entrecasteauxii")
+mapply(complete_df, org)
+complete_df("Coleonyx brevis")
 

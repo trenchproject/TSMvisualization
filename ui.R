@@ -9,9 +9,10 @@ names(month) <- c("January","February","March","April","May","June","July","Augu
 scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
 
-org_tpc <- c("Psammodromus hispanicus", "Psammodromus algirus", "Xantusia vigilis", "Lacerta agilis", "Elgaria multicarinata", "Lepidophyma flavimaculatum", 
+org_tpc <- c("Psammodromus hispanicus", "Psammodromus algirus", "Xantusia vigilis", "Elgaria multicarinata", "Lepidophyma flavimaculatum", 
              "Ctenotus taeniolatus", "Hemiergis decresiensis", "Dipsosaurus dorsalis", "Ctenotus regius", "Ctenotus uber", "Eulamprus kosciuskoi", 
-             "Sphaerodactylus nicholsi", "Platysaurus intermedius", "Takydromus sexlineatus")
+             "Sphaerodactylus nicholsi", "Platysaurus intermedius", "Takydromus sexlineatus", "Podarcis muralis", "Anolis carolinensis", "Uta stansburiana", "Sceloporus variabilis", "Takydromus septentrionalis", 
+             "Pseudemoia entrecasteauxii", "Eulamprus tympanum")
 org <- c(org_tpc, "Coleonyx brevis")
 
 variables <- c("Month", "Hour", "Scenario", "Shade")
@@ -28,7 +29,7 @@ shinyUI <- fluidPage (
       sidebarLayout(
         sidebarPanel(
           h3("Distribution map"),
-          p("Select a species and hit \"Run\" to take a look at their thermal safety margins depending on various conditions within their habitat."),
+          p("Select a species and hit \"Run\" to take a look at their thermal safety margins under various conditions within their habitat."),
           selectInput("species_1", label = "Species", choices = org, selected = "Coleonyx brevis"),
           
           fluidRow(
@@ -105,7 +106,6 @@ shinyUI <- fluidPage (
         
         mainPanel(
           plotOutput("plot2", width = "100%")
-          
         )
       )
     ),

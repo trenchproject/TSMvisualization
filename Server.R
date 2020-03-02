@@ -86,11 +86,16 @@ shinyServer <- function(input, output) {
   # })
   
   data_by_org_2 <- reactive({
+    # org_2 <- "Xantusia vigilis"
+    # org_2 <- "Psammodromus hispanicus"
     org_2 <- input$species_2
     filename <- paste("Data\\",gsub(" ","_",org_2),"_combined.rds", sep= "")
     df2 <- readRDS(filename)
-    levels(df2$Hour) <- hours
-    levels(df2$Month) <- month
+    # levels(df2$Hour) <- hours
+    # levels(df2$Month) <- month
+    df2$Month <- factor(df2$Month, levels = names(month))
+    df2$Hour <- factor(df2$Hour, levels = hours)
+    df2$Scenario <- factor(df2$Scenario, levels = scenarios)
     df2
   })
   
@@ -125,6 +130,8 @@ shinyServer <- function(input, output) {
   dataInput_2 <- reactive({
     data_by_org_2() %>% filter(Month %in% names(month[as.numeric(input$month_2)]))
   })
+  
+  #df2 <- df2 %>% filter(Month %in% 1)
 
   
   dataTPC <- reactive({
