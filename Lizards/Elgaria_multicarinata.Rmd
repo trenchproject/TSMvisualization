@@ -1,0 +1,14 @@
+---
+title: "Elgaria multicarinata"
+output: html_document
+---
+
+Elgaria multicarinata are found in western United States and prefer grassland, open forest and chaparral habitat.
+They have a large head and a strong jaw, which enable them to bite with a lot of power.
+They hibernate during colder months and mating occurs around April and May.
+Long-living and live up to 15 years.
+
+
+<p align='center'>
+<img src="https://i.pinimg.com/originals/40/14/88/40148816b498f095d7e2ad9ca7193658.jpg", width = 500>
+</p>

@@ -1,0 +1,14 @@
+---
+title: "Dipsosaurus dorsalis"
+output: html_document
+---
+
+Dipsosaurus dorsalis inhabit desert environments, thus often called as Desert Iguana. They are adapted to hot environments, and perform best at 40 °C (104 °F).
+They measure 33 - 40 cm in length, two-thirds of which is the tail.
+They are territorial and males often display aggressive behaviors to secure their mates. Their polygynous nature allows dominant males to mate with more females.
+They are folivores that feed on a variety of plants with occasional consumption of insects.
+
+
+<p align='center'>
+<img src="https://lh3.googleusercontent.com/proxy/TYL54dewPo8Z6T_1gbRQlrpIUHNZ30KJ3BF8rMNiYmD8aO2QLyYf1bYu3DWG0JGHHC-3IAP7zSVdfEGWcxtVaEWnweVyQowcU1Zwnpqwwe7LiMmOxZcjGfM", width = 500>
+</p>

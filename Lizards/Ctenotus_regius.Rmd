@@ -1,0 +1,12 @@
+---
+title: "Ctenotus regius"
+output: html_document
+---
+
+
+Ctenotus regius is a species of skinks exclusively found in Australia, mostly in arid areas with sparse ground cover.
+They are medium-sized, and fast-moving that have a pattern combining stripes on the back and small white spots on the sides. 
+
+<p align='center'>
+<img src="https://previews.123rf.com/images/marsipanes/marsipanes1606/marsipanes160600634/58675175-ctenotus-regius-is-a-species-of-saurians-of-the-family-of-cophoscincopus-this-species-is-endemic-to-.jpg", width = 500>
+</p>

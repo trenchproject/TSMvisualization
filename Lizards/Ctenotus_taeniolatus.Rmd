@@ -1,0 +1,13 @@
+---
+title: "Ctenotus taeniolatus"
+output: html_document
+---
+
+
+Ctenotus taeniolatus are found in Eastern Australia inhabiting bushland and heathland.
+Their physical characteristics involve long limbs, a long tail and light and dark stripes down the body.
+Their mainly eat small invertebrates such as insects and worms. 
+
+<p align='center'>
+<img src="https://live.staticflickr.com/1741/42479245752_144595e0b4_b.jpg", width = 500>
+</p>
