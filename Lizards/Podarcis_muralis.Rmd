@@ -1,0 +1,22 @@
+---
+title: "Podarcis muralis"
+output: html_document
+---
+
+Common name: Common Wall Lizard.
+
+As the common name already has an adjective "common", this lizard is commonly found in cities as well as in coastal plains and mountainous areas.
+They are highly opportunistic, has short reproduction cycle, and invasive, which made them successful in spreading across Europe. They can be found from western Spain to the Black Sea coast (Oefinger).
+
+*Podarcis muralis* reproduce between April and July, and the average clutch size is 2 per year. The maximum longevity is reported as 5 years (Barbault and Mou 1988).
+
+
+<p align='center'>
+<img src="https://live.staticflickr.com/4702/38934551044_3fddf449cd_b.jpg", width = 500>
+</p>
+
+References  
+Barbault, R., & Mou, Y. P. (1988). Population dynamics of the common wall lizard, Podarcis muralis, in southwestern France. Herpetologica, 38-47.
+
+Oefinger, Birgit & Peter (n.d.). EUROLIZARDS. Podacris muralis - Common Wall Lizard https://www.eurolizards.com/lizards/psammodromus-hispanicus/ accessed Apr. 14, 2020.
+

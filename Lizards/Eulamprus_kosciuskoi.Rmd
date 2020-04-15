@@ -1,0 +1,18 @@
+---
+title: "Eulamprus kosciuskoi"
+output: html_document
+---
+
+Common name: Alpine Water Skink.
+*Eulamprus kosciuskoi* is a skink that occurs in alpine and montane areas in south-eastern Australia.  
+*E. kosciuskoi* has olive-brown coloration with black and yellow-brown stripes.  
+They burrow underground for shelter and to avoid the snow in the cold winter. Alpine water skinks are one of the rare lizards that are viviparous, and gives birth to an average of three offspring per litter. Mating occurs in spring.
+
+Their habitat needs to be undisturbed sphagnum bog areas along drainage lines in treeless alpine plains and valleys. This specific habitat requirements make them susceptible to human disturbances.
+
+<p align='center'>
+<img src="https://live.staticflickr.com/4364/36229152512_a26b6e2435_b.jpg", width = 500>
+</p>
+
+
+The State of Victoria, Department of Sustainability and Environment. (2003). Alpine Water Skink. Action Statement, Flora and Fauna Guarantee Act 1988 No. 114. https://www.environment.vic.gov.au/__data/assets/pdf_file/0018/32391/Alpine_Water_Skink_Eulamprus_kosciuskoi.pdf Accessed Apr. 14, 2020.

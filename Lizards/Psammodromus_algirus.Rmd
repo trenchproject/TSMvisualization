@@ -3,15 +3,16 @@ title: "Psammodromus algirus"
 output: html_document
 ---
 
-Psammodromus algirus is an algerian lizard as implied from the genus "algirus", which can also be found in Morocco and part of Spain (Mateo et al. 2009).
+*Psammodromus algirus* is an algerian lizard as implied from the genus "algirus", which can also be found in Morocco and part of Spain (Mateo et al. 2009).
 
-P. algirus resides in the coastal pinewoods of the Mediterranean thicket as well as in more arid, shrubby and sandy zones. It measures about 18 - 30 cm long.
+*P. algirus* resides in the coastal pinewoods of the Mediterranean thicket as well as in more arid, shrubby and sandy zones. It measures about 18 - 30 cm long.
 Utilizing their keen eyesight, excelled hearing and agility, they prey on grasshoppers, coleopterans, ants, spiders by suddenly jumping on them (Mazza 2003).
 
 <p align='center'>
 <img src="https://www.monaconatureencyclopedia.com/wp-content/uploads/2012/10/1-Psammodromus-algirus.jpg", width = 500>
 </p>
 
+References
 Mateo, J.A., Cheylan, M., Nouira, M.S., Joger, U., Sá-Sousa, P., Pérez Mellado, V., Martinez Solano, I. & Sindaco, R. (2009). Psammodromus algirus (errata version published in 2016). The IUCN Red List of Threatened Species 2009:
 
 Mazza, Giuseppe. (2003) Monaco Nature Encyclopedia Discover the biodiversity. https://www.monaconatureencyclopedia.com/psammodromus-algirus/?lang=en accessed Apr. 9th, 2020

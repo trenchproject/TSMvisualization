@@ -1,0 +1,11 @@
+---
+title: "Lepidophyma flavimaculatum"
+output: html_document
+---
+
+Common name: Yellow-spotted night lizard.  
+
+
+<p align='center'>
+<img src="https://live.staticflickr.com/7131/6964336856_e67552f9ee_c.jpg", width = 500>
+</p>

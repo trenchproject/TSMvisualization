@@ -1,0 +1,14 @@
+---
+title: "Hemiergis decresiensis"
+output: html_document
+---
+
+Common name: Three-toed earless skink.  
+*Hemiergis decresiensis* is a burrowing lizard that live in southern Australia.  
+Their limbs are very small and each limb has only three toes. This species is viviparous and give birth to live youngs.
+
+
+<p align='center'>
+<img src="https://live.staticflickr.com/357/31545804293_7ab8546f3b_b.jpg", width = 500>
+</p>
+

@@ -1,0 +1,21 @@
+---
+title: "Platysaurus intermedius"
+output: html_document
+---
+
+
+Common name: Common Flat Lizard.
+
+*Platysaurus intermedius* has 9 subspecies, all of which are found in southern Africa.  
+The common name "flat lizard" comes from the fact that they are dorso-ventrally thin. This enables them to use narrow crevices as retreat sites, making them a rock specialist.  
+In terms of appreance, sexual dichromatism is obvious in this species with males colorfully decorated while females are uniform and conservatively colored.  
+(Scott et al. 2004)
+
+
+<p align='center'>
+<img src="https://live.staticflickr.com/3849/14615109548_38c3fbdef5_b.jpg", width = 500>
+</p>
+
+Reference
+
+Scott, I., Scott Keogh, J., & Whiting, M. (2004). Shifting sands and shifty lizards: Molecular phylogeny and biogeography of African flat lizards ( Platysaurus). Molecular Phylogenetics and Evolution, 31(2), 618-629.

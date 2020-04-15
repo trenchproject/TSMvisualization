@@ -8,7 +8,7 @@ hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 A
 lizards_tpc <- fread("lizards_tpc.csv")
 
 
-shinyServer <- function(input, output) {
+shinyServer <- function(input, output, session) {
   
   # INTRO
   output$introduction <- renderText ({

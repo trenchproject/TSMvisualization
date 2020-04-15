@@ -6,7 +6,6 @@ output: html_document
 Ctenotus uber are found in western Australia.
 
 
-
 <p align='center'>
 <img src="https://collections.museumvictoria.com.au/content/media/6/360056-large.jpg", width = 500>
 </p>

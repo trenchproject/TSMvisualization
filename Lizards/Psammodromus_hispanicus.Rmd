@@ -2,9 +2,8 @@
 title: "Psammodromus hispanicus"
 output: html_document
 ---
-
-Psammodromus hispanicus common name; Spanish Psammodromus
-This species can be found in Spain, Portugal and part of France and lives at altitudes ranging from 660 – 1350 m above sea level and occupy areas with harsh winters (Fitze et al. 2011).
+Common name, Spanish Psammodromus.  
+This species can be found in Spain, Portugal and part of France. They live at altitudes ranging from 660 – 1350 m above sea level and occupy areas that experience harsh winters and weather conditions (Fitze et al. 2011).  
 They prefer an open microhabitat with patches of uncovered soil and loose vegetation consisting of dense herbs and shrubs.
 Most males have a distinct pattern of black and white bars while females frequently have greenish lateral stripes (Oefinger 2016).
 They are active April through October and hibernate in winter. Adults reproduce in May and juveniles hatch in August (Fitze 2012).
@@ -14,11 +13,12 @@ They are active April through October and hibernate in winter. Adults reproduce 
 </p>
 
 
+References  
 Fitze, P. S. (2012). Spanish Sand Racer-Psammodromus hispanicus. Enciclopedia Virtual de los Vertebrados Españoles.
 
 Fitze, P. S., González-Jimena, V., San José, L. M., San Mauro, D., Aragón, P., Suárez, T., Zardoya, R. (2011). Integrative analyses of speciation and divergence in Psammodromus hispanicus (Squamata: Lacertidae). BMC Evolutionary Biology, 11: 347. 
 
-Oefinger, Birgit & Peter (2016) EUROLIZARDS. Psammodromus hispanicus - Spanish Psammodromus
+Oefinger, Birgit & Peter (2016). EUROLIZARDS. Psammodromus hispanicus - Spanish Psammodromus
 https://www.eurolizards.com/lizards/psammodromus-hispanicus/ accessed Apr. 9, 2020.
 
-Juan M. Pleguezuelos, Paulo Sá-Sousa, Valentin Pérez-Mellado, Rafael Marquez, Marc Cheylan, Iñigo Martínez-Solano 2009. Psammodromus hispanicus. The IUCN Red List of Threatened Species 2009: e.T61560A12492257.
+Juan M. Pleguezuelos, Paulo Sá-Sousa, Valentin Pérez-Mellado, Rafael Marquez, Marc Cheylan, Iñigo Martínez-Solano (2009). Psammodromus hispanicus. The IUCN Red List of Threatened Species 2009: e.T61560A12492257.

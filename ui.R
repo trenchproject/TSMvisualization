@@ -2,17 +2,16 @@ pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2',
 lapply(pkgs, library, character.only = TRUE)
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
-setwd("C:\\Users\\lbuckley\\My Documents\\TSMviz")
 
 month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
 scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
 
-org_tpc <- c("Psammodromus hispanicus", "Psammodromus algirus", "Anolis carolinensis", "Ctenotus regius", "Ctenotus taeniolatus", "Ctenotus uber",  
-             "Dipsosaurus dorsalis", "Elgaria multicarinata", "Eulamprus kosciuskoi", "Eulamprus tympanum", "Hemiergis decresiensis", "Lepidophyma flavimaculatum",
-             "Platysaurus intermedius", "Podarcis muralis", "Pseudemoia entrecasteauxii", "Sceloporus graciosus", "Sceloporus occidentalis", 
-             "Sceloporus variabilis", "Sphaerodactylus macrolepis", "Sphaerodactylus nicholsi", "Takydromus septentrionalis", "Takydromus sexlineatus", "Uta stansburiana", "Xantusia vigilis")
+org_tpc <- c("Anolis carolinensis", "Ctenotus regius", "Ctenotus taeniolatus", "Ctenotus uber", "Dipsosaurus dorsalis", "Elgaria multicarinata", "Eulamprus kosciuskoi", 
+             "Eulamprus tympanum", "Hemiergis decresiensis", "Lepidophyma flavimaculatum", "Platysaurus intermedius", "Podarcis muralis", "Psammodromus hispanicus", 
+             "Psammodromus algirus", "Pseudemoia entrecasteauxii", "Sceloporus graciosus", "Sceloporus occidentalis", "Sceloporus variabilis", 
+             "Sphaerodactylus macrolepis", "Sphaerodactylus nicholsi", "Takydromus septentrionalis", "Takydromus sexlineatus", "Uta stansburiana", "Xantusia vigilis")
 org <- c(org_tpc, "Coleonyx brevis")
 
 variables <- c("Month", "Hour", "Scenario", "Shade")
@@ -23,7 +22,7 @@ lizards_tpc <- fread("lizards_tpc.csv")
 shinyUI <- fluidPage (
   useShinyjs(),
   titlePanel("Climate Change and Lizards"),
-  
+  p("Short description of species added up to Sceloporus graciosus"),
   hr(),
   
   h4("What is Thermal Safety Margin (TSM)?"),
@@ -34,7 +33,7 @@ shinyUI <- fluidPage (
   
   br(), 
   
-  strong("Select a species and explore their distribution, current status and the risk they face from increasing temperature"),
+  strong("Select a species and explore their distribution, current status and the risk they may face from increasing temperature"),
   
   fluidRow(
     column(6, selectInput("species", label = "", choices = org_tpc, selected = "Psammodromus hispanicus"))
@@ -75,10 +74,10 @@ shinyUI <- fluidPage (
                          
                          mainPanel(
                            conditionalPanel(
-                             condition = "input.dist_frac == 'Distribution'", plotOutput("plot1", width = "100%")
+                             condition = 'input.dist_frac == "Distribution"', plotOutput("plot1", width = "100%")
                            ),
                            conditionalPanel(
-                             condition = "input.dist_frac == 'Fraction'", plotOutput("density")
+                             condition = 'input.dist_frac == "Fraction"', plotOutput("density")
                            ),
                            
                            br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
