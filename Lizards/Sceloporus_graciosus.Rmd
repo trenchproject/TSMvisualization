@@ -7,6 +7,7 @@ Common name: Sagebrush Lizard.
 
 *Sceloporus graciosus* is a common lizard in central to western United States. They are mostly found in sagebrush cover but they also inhabit greasewood and other desert shrubs and sometimes small rocky outcrops as well.  
 Their mating season is spring, and eggs are usually laid in June, which will then hatch in August. They stay inactive during the cold months of the year.
+(Cossel, 1997)
 
 <p align='center'>
 <img src="https://calphotos.berkeley.edu/imgs/512x768/0000_0000/0211/0906.jpeg", width = 500>

@@ -7,7 +7,7 @@ output: html_document
 They have a large head and a strong jaw, which enable them to bite with a lot of power.
 They hibernate during colder months, mating occurs around April and May, and eggs hatch through summer and early fall.  
 This species is long-living and known to live up to 15 years.
-(San Diego Zoo Global 2019)
+(San Diego Zoo Global, 2019)
 
 <p align='center'>
 <img src="https://i.pinimg.com/originals/40/14/88/40148816b498f095d7e2ad9ca7193658.jpg", width = 500>

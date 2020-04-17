@@ -1,0 +1,21 @@
+---
+title: "Sphaerodactylus macrolepis"
+output: html_document
+---
+
+*Sphaerodactylus macrolepis* is a species of gecko found throughout the Virgin Islands and Puerto Rico (Kelehear et al., 2017). They are generalist in terms of habitat selection and can be found in a variety of terrains in Pueto Rico.  
+They are small in size, and adults only reaches about 7 cm including the tail, which makes them susecptible to extreme heat and dessication (Allen & Powell, 2014).  
+This species is considered to be the densest terrestrial vertebrate in the world, with estimates reaching 67,600 geckos per hectare (Rodda et al., 2001). Their abundance plays a critical role in the ecosystem, serving as a rich food source for many predators.
+
+
+
+<p align='center'>
+<img src="https://pbs.twimg.com/media/DFMMBojW0AAmnax.jpg", width = 500>
+</p>
+
+References  
+Allen, K. E., & Powell, R. (2014). Thermal biology and microhabitat use in puerto rican eyespot geckos (Sphaerodactylus Macrolepis Macrolepis). Herpetological Conservation and Biology, 9(3), 590-600.
+
+Kelehear, C., Graham, S., & Langkilde, T. (2017). Defensive Strategies of Puerto Rican Dwarf Geckos (Sphaerodactylus macrolepis) Against Invasive Fire Ants. Herpetologica, 73(1), 48-54.
+
+Rodda, G., Perry, G., Rondeau, R., & Lazell, J. (2001). The densest terrestrial vertebrate. Journal Of Tropical Ecology, 17, 331-338.

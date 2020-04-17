@@ -3,10 +3,10 @@ title: "Psammodromus hispanicus"
 output: html_document
 ---
 Common name, Spanish Psammodromus.  
-This species can be found in Spain, Portugal and part of France. They live at altitudes ranging from 660 – 1350 m above sea level and occupy areas that experience harsh winters and weather conditions (Fitze et al. 2011).  
+This species can be found in Spain, Portugal and part of France. They live at altitudes ranging from 660 – 1350 m above sea level and occupy areas that experience harsh winters and weather conditions (Fitze et al., 2011).  
 They prefer an open microhabitat with patches of uncovered soil and loose vegetation consisting of dense herbs and shrubs.
-Most males have a distinct pattern of black and white bars while females frequently have greenish lateral stripes (Oefinger 2016).
-They are active April through October and hibernate in winter. Adults reproduce in May and juveniles hatch in August (Fitze 2012).
+Most males have a distinct pattern of black and white bars while females frequently have greenish lateral stripes (Oefinger, 2016).
+They are active April through October and hibernate in winter. Adults reproduce in May and juveniles hatch in August (Fitze, 2012).
 
 <p align='center'>
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Benny_Trapp_Psammodromus_hispanicus.jpg", width = 500>
