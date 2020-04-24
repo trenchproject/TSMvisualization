@@ -1,0 +1,23 @@
+
+Thermal safety margin is the difference between the operative temperature and the critical thermal maximum of a given organism. <br>
+
+Here we define critical thermal maximum as the highest temperature the organism can survive and reproduce. In other words, TSM indicates how much more the temperature can increase before the environment turns uninhabitable.  <br>
+<br>
+
+A positive TSM means the environmental temperature is within the thermal tolerance of the organism and a negative TSM implies that the operative temperature surpasses the critical thermal maximum. TSM is a good indicator of whether the environment is suitable for certain organisms, and it has potential for predicting whether species will be able to keep surving in the same habitat in the world of accelerating climate change. <br>
+<br>
+
+In this platform, we use TSM to visualize and address the danger some species might face from increased temperature.
+
+
+<!--begin.rcode
+curve <- TPC(0:50, 35.6, 8.8, 45.5)
+ggplot() + geom_line(data = NULL, aes(x = c(0:50), y = curve), col = "steelblue", size = 1.1) + xlab("Temperature (°C)") + ylab("Performance") +
+  geom_segment(aes(x = 40.5, y = 0.1, xend = 45.5, yend = 0), size = 1) + geom_text(aes(x = 45.5 - 6, y = 0.14, label = "Tmax"), size = 5) +
+  geom_segment(aes(x = 33, y = 0.72, xend = 45.5, yend = 0.72), arrow = arrow(length = unit(0.4, "cm"), ends = "both"), size = 1) +
+  geom_text(aes(x = 15, y = 0.9, label = "Thermal Safety margin"), size = 6.5) + geom_segment(aes(x = 26, y = 0.88, xend = 39, yend = 0.73), size = 0.8, arrow = arrow(length = unit(0.3, "cm"))) +
+  geom_vline(xintercept = 33, size = 1.2, lty = 5, col = "blue") + geom_text(aes(x = 33 - 1.7, label = "Operative temperature", y = 0.4), size = 5, angle = 90, col = "blue") + theme_classic( ) +
+  geom_rect(aes(xmin = 45.5, xmax = Inf, ymin = -Inf, ymax = Inf), alpha = 0.7, fill = "red") +
+  scale_x_continuous(limits = c(0, 50 + 2), expand = c(0,0)) + scale_y_continuous(limits = c(0, 1.05), expand = c(0,0)) +
+  theme(axis.text = element_text(size = 12), axis.title = element_text(size = 15))
+end.rcode-->

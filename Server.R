@@ -2,17 +2,6 @@ month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
 scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
-TPC<- function(T,Topt,CTmin, CTmax){
-  F=T
-  F[]=NA
-  sigma= (Topt-CTmin)/4
-  F[T<=Topt & !is.na(T)]= exp(-((T[T<=Topt & !is.na(T)]-Topt)/(2*sigma))^2) 
-  F[T>Topt & !is.na(T)]= 1- ((T[T>Topt & !is.na(T)]-Topt)/(Topt-CTmax))^2
-  #set negetative to zero
-  F[F<0]<-0
-  
-  return(F)
-}
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/TSMdfs")
 
@@ -20,21 +9,6 @@ lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyServer <- function(input, output, session) {
-  
-  # INTRO
-  output$introduction <- renderText ({
-    "Thermal safety margin is the difference between the operative temperature and the critical thermal maximum of a given organism. <br>
-    Here we define critical thermal maximum as the highest temperature the organism can survive and reproduce. In other words, TSM indicates how much more the temperature can increase before the environment
-    turns unfeasible for them to live.  <br>
-    <br>
-    A positive TSM means the environmental temperature is within the thermal tolerance of the organism and a negative TSM implies that the operative temperature surpasses the critical thermal maximum.
-    TSM is a good indicator of whether the environment is suitable for certain organisms, and it has potential for predicting whether species will be able to keep
-    surving in the same habitat in the world of accelerating climate change. <br>
-    <br>
-    In this platform, we use TSM to visualize and address the danger some species might face with increased temperature."
-  })
-  
-  
   # Introduction figure
   output$intro_fig <- renderPlot({
     
@@ -60,26 +34,22 @@ shinyServer <- function(input, output, session) {
   
   # Method 2: fread from csv
   # data_by_org <- eventReactive( input$run,{
-  #   
-  #   object <- get_object("Psammodromus_hispanicus", "tsmviz")
-  #   object_data <- readBin(object, "character")
-  #   df <- data.table::fread(text = object_data, stringsAsFactors = FALSE)
-  #   
-  #   # org <- input$species_1
-  #   # filename <- paste("Data\\",gsub(" ","_",org),"_combined.csv", sep= "")
-  #   # df <- data.table::fread(filename)
+  # 
+  #   org <- input$species
+  #   filename <- paste("Data/",gsub(" ","_",org),".csv", sep= "")
+  #   df <- data.table::fread(filename)
   #   df$Month <- factor(df$Month, levels = names(month))
   #   df$Hour <- factor(df$Hour, levels = hours)
   #   df$Scenario <- factor(df$Scenario, levels = scenarios)
   #   df
   # }, ignoreNULL = FALSE
   # )
-  # 
+  
   # MAP
   #Method 3: RDS file
-  # read the data file of the selected species to make a map
+  #read the data file of the selected species to make a map
   data_by_org <- eventReactive( input$run,{
-    
+
     org <- input$species
     filename <- paste("Data/",gsub(" ","_",org),"_combined.rds", sep= "")
     df <- readRDS(filename)
@@ -89,10 +59,10 @@ shinyServer <- function(input, output, session) {
     df
   }, ignoreNULL = FALSE
   )
-  
+
   # Filter data by selected inputs to map the distribution
   dataInput <- eventReactive( input$run,{
-    data_by_org() %>% filter(Hour %in% input$hour & Month %in% names(month[as.numeric(input$month)]) & Scenario %in% input$scenario & Shade %in% input$shade)
+    data_by_org() %>% filter(Hour %in% input$hour & Month %in% input$month & Scenario %in% input$scenario & Shade %in% input$shade)
   }, ignoreNULL = FALSE
   )
   
@@ -106,8 +76,9 @@ shinyServer <- function(input, output, session) {
   }, ignoreNULL = FALSE
   )
   
+  # Title of the map
   title <- eventReactive( input$run, {
-    title_m <- paste("| ", names(month[as.numeric(input$month)]))
+    title_m <- paste("| ", input$month)
     title_h <- paste("| ", input$hour)
     title_sc <- paste("| ", input$scenario)
     title_sh <- paste("| ", input$shade)
@@ -129,15 +100,14 @@ shinyServer <- function(input, output, session) {
   
   output$mymap <- renderLeaflet({
     leaflet() %>%
-      addProviderTiles(providers$OpenStreetMap) %>%
-      setView(lng = (max(dataInput()$x) + min(dataInput()$x))/2,  lat = (max(dataInput()$y) + min(dataInput()$y))/2, zoom = 3) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      setView(lng = (max(dataInput()$x) + min(dataInput()$x))/2, lat = (max(dataInput()$y) + min(dataInput()$y))/2, zoom = 3) %>%
       addRectangles(lng1 = min(dataInput()$x), lng2 = max(dataInput()$x), lat1 = min(dataInput()$y), lat2 = max(dataInput()$y))
   })
   
   observeEvent(input$map_onoff,{
     toggle("mymap")
-  }, ignoreNULL = FALSE
-  )
+  })
   
   output$plot1 <- renderPlot({
     

@@ -1,5 +1,5 @@
-pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky')
-# 'pdftools', 'rgdal', 'TrenchR'
+pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky')
+# 'pdftools', 'rgdal', 
 
 lapply(pkgs, library, character.only = TRUE)
 
@@ -22,7 +22,7 @@ lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyUI <- fluidPage (
-  busyIndicator(wait = 1000),
+  busyIndicator(text = "Data processing...", wait = 1000),
   tags$head(tags$style(HTML('* {font-family: Calibri;}'))),
   useShinyjs(),
   titlePanel("Climate Change and Lizards"),
@@ -31,14 +31,13 @@ shinyUI <- fluidPage (
   
   h4("What is Thermal Safety Margin (TSM)?"),
   
-  htmlOutput("introduction"),
-
+  includeHTML("intro.html"),
   br(),
-  plotOutput("intro_fig", width = "100%"),
+  #column(12, align="center", plotOutput("intro_fig", width = "100%")),
   
   br(), 
   
-  strong("Select a species and explore their distribution, current status and the risk they may face from increasing temperature"),
+  strong("Select a species and explore their distribution, current status and the risk they may face from increasing temperature."),
   
   fluidRow(
     column(6, selectInput("species", label = "", choices = org_tpc, selected = "Psammodromus hispanicus"))
@@ -63,7 +62,7 @@ shinyUI <- fluidPage (
                              column(6,radioButtons("columns", label = "Vertical facets", choices = variables, selected = "Hour"))
                            ),
                            
-                           select2Input("month", label = "Month", choices = month, multiple = TRUE, selected = 1),
+                           select2Input("month", label = "Month", choices = names(month), multiple = TRUE, selected = "January"),
                            select2Input("hour", label = "Hour", choices = hours, multiple = TRUE, selected = "01 PM"),
                            
                            fluidRow(
@@ -79,7 +78,7 @@ shinyUI <- fluidPage (
                          
                          mainPanel(
                            conditionalPanel(
-                             condition = 'input.dist_frac == "Distribution"', plotOutput("plot1", width = "100%")
+                             condition = 'input.dist_frac == "Distribution"', fluidRow(column(12, align="center", plotOutput("plot1", width = "100%")))
                            ),
                            conditionalPanel(
                              condition = 'input.dist_frac == "Fraction"', plotOutput("density")
@@ -87,9 +86,9 @@ shinyUI <- fluidPage (
                            
                            br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
                            
-                           fluidRow(
-                             column(8, leafletOutput("mymap"))
-                           ),
+                           
+                             column(8, offset = 2, align="center", leafletOutput("mymap")),
+                           
                            br(),
                          )
                        )
@@ -106,7 +105,7 @@ shinyUI <- fluidPage (
                            
                            fluidRow(
                              column(6, radioButtons("scenario_tpc", label = "Scenario", choices = scenarios, selected = "Normal")),
-                             column(6, radioButtons("shade_tpc", label = "Shade", choices = c("Covered", "Exposed"), selected = "Covered")),
+                             column(6, radioButtons("shade_tpc", label = "Shade", choices = c("Exposed", "Covered"), selected = "Exposed")),
                            )
                          ),
                          
@@ -131,7 +130,7 @@ shinyUI <- fluidPage (
                          ),
                          
                          mainPanel(
-                           plotOutput("plot2", width = "100%")
+                           column(12, align = "center", plotOutput("plot2", width = "100%"))
                          )
                        )
               ),
@@ -153,7 +152,7 @@ shinyUI <- fluidPage (
                            
                            fluidRow(
                              column(6, radioButtons("scenario_data", label = "Scenario", choices = scenarios, selected = "Normal")),
-                             column(6, radioButtons("shade_data", label = "Shade", choices = c("Covered", "Exposed"), selected = "Covered")),
+                             column(6, radioButtons("shade_data", label = "Shade", choices = c("Exposed", "Covered"), selected = "Exposed")),
                            )
                          ),
                          
