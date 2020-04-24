@@ -2,6 +2,17 @@ month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
 scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
+TPC<- function(T,Topt,CTmin, CTmax){
+  F=T
+  F[]=NA
+  sigma= (Topt-CTmin)/4
+  F[T<=Topt & !is.na(T)]= exp(-((T[T<=Topt & !is.na(T)]-Topt)/(2*sigma))^2) 
+  F[T>Topt & !is.na(T)]= 1- ((T[T>Topt & !is.na(T)]-Topt)/(Topt-CTmax))^2
+  #set negetative to zero
+  F[F<0]<-0
+  
+  return(F)
+}
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/TSMdfs")
 
@@ -12,14 +23,15 @@ shinyServer <- function(input, output, session) {
   
   # INTRO
   output$introduction <- renderText ({
-    "Thermal safety margin is the difference between the operative temperature and the critical thermal maximum of a given organism. 
-    Critical thermal maximum is the highest temperature the organism can survive and reproduce. In other words, TSM indicates how much more the temperature can increase before the environment
-    turns unfeasible for them to live.
+    "Thermal safety margin is the difference between the operative temperature and the critical thermal maximum of a given organism. <br>
+    Here we define critical thermal maximum as the highest temperature the organism can survive and reproduce. In other words, TSM indicates how much more the temperature can increase before the environment
+    turns unfeasible for them to live.  <br>
+    <br>
     A positive TSM means the environmental temperature is within the thermal tolerance of the organism and a negative TSM implies that the operative temperature surpasses the critical thermal maximum.
-    \nTSM is a good indicator of whether the environment is suitable for certain organisms, and it has potential for predicting whether species will be able to keep
-    surving in the same habitat in the world of accelerating climate change.
-    
-    \nIn this platform, we use TSM to visualize and address the danger some species might face with increased temperature."
+    TSM is a good indicator of whether the environment is suitable for certain organisms, and it has potential for predicting whether species will be able to keep
+    surving in the same habitat in the world of accelerating climate change. <br>
+    <br>
+    In this platform, we use TSM to visualize and address the danger some species might face with increased temperature."
   })
   
   
@@ -41,7 +53,7 @@ shinyServer <- function(input, output, session) {
   # Brief background information of selected species
   output$species_info <- renderText({
     org <- input$species
-    filename <- paste("Lizards\\",gsub(" ","_",org),".Rmd", sep= "")
+    filename <- paste("Lizards/",gsub(" ","_",org),".Rmd", sep= "")
     includeMarkdown(filename)
     
   })
@@ -70,7 +82,7 @@ shinyServer <- function(input, output, session) {
   data_by_org <- eventReactive( input$run,{
     
     org <- input$species
-    filename <- paste("Data\\",gsub(" ","_",org),"_combined.rds", sep= "")
+    filename <- paste("Data/",gsub(" ","_",org),"_combined.rds", sep= "")
     df <- readRDS(filename)
     df$Month <- factor(df$Month, levels = names(month))
     df$Hour <- factor(df$Hour, levels = hours)
@@ -160,7 +172,7 @@ shinyServer <- function(input, output, session) {
   # TPC
   dataTPC <- reactive({
     org <- input$species
-    filename <- paste("Data\\",gsub(" ","_",org),"_combined.rds", sep= "")
+    filename <- paste("Data/",gsub(" ","_",org),"_combined.rds", sep= "")
     df <- readRDS(filename) %>% filter(Hour %in% input$hour_tpc & Month %in% names(month[as.numeric(input$month_tpc)]) & Scenario %in% input$scenario_tpc & Shade %in% input$shade_tpc)
     lizards_tpc[lizards_tpc$Binomial == input$species, Tmax] - mean(df$Tsm)
   })
@@ -180,7 +192,7 @@ shinyServer <- function(input, output, session) {
   # PLOT  
   # data_by_org_2 <- reactive({
   #   org_2 <- input$species_2
-  #   filename <- paste("Data\\",gsub(" ","_",org_2),"_combined.csv", sep= "")
+  #   filename <- paste("Data/",gsub(" ","_",org_2),"_combined.csv", sep= "")
   #   df <- data.table::fread(filename)
   #   levels(df$Hour) <- hours
   #   levels(df$Month) <- month
@@ -190,7 +202,7 @@ shinyServer <- function(input, output, session) {
   # read the data file of the selected species to make a plot
   data_by_org_2 <- reactive({
     org_2 <- input$species
-    filename <- paste("Data\\",gsub(" ","_",org_2),"_combined.rds", sep= "")
+    filename <- paste("Data/",gsub(" ","_",org_2),"_combined.rds", sep= "")
     df2 <- readRDS(filename)
     # levels(df2$Hour) <- hours
     # levels(df2$Month) <- month
@@ -228,7 +240,7 @@ shinyServer <- function(input, output, session) {
   # DATA
   data_by_org_data <- reactive({
     org <- input$species
-    filename <- paste("Data\\",gsub(" ","_",org),"_combined.rds", sep= "")
+    filename <- paste("Data/",gsub(" ","_",org),"_combined.rds", sep= "")
     df <- readRDS(filename)
     df$Month <- factor(df$Month, levels = names(month))
     df$Hour <- factor(df$Hour, levels = hours)
