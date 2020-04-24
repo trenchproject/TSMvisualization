@@ -55,7 +55,6 @@ shinyServer <- function(input, output, session) {
     org <- input$species
     filename <- paste("Lizards/",gsub(" ","_",org),".Rmd", sep= "")
     includeMarkdown(filename)
-    
   })
   
   
