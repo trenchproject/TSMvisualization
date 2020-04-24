@@ -1,4 +1,5 @@
-pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2','taxize', 'magrittr', 'TrenchR', 'ggplot2','ggridges','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales')
+
+pkgs <- c('shiny','pdftools','tidyverse','taxize','raster','rgdal','plotly','reshape2','magrittr','TrenchR','ggplot2','ggridges','plotly','data.table','leaflet','shinyjs','scales','shinysky')
 lapply(pkgs, library, character.only = TRUE)
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
@@ -20,6 +21,7 @@ lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyUI <- fluidPage (
+  busyIndicator(wait = 1000),
   useShinyjs(),
   titlePanel("Climate Change and Lizards"),
   p("Short description of species added up to Sceloporus graciosus"),
@@ -58,8 +60,8 @@ shinyUI <- fluidPage (
                              column(6,radioButtons("columns", label = "Vertical facets", choices = variables, selected = "Hour"))
                            ),
                            
-                           selectInput("month", label = "Month", choices = month, multiple = TRUE, selected = 1),
-                           selectInput("hour", label = "Hour", choices = hours, multiple = TRUE, selected = "01 PM"),
+                           select2Input("month", label = "Month", choices = month, multiple = TRUE, selected = 1),
+                           select2Input("hour", label = "Hour", choices = hours, multiple = TRUE, selected = "01 PM"),
                            
                            fluidRow(
                              column(6, checkboxGroupInput("scenario", label = "Scenario", choices = scenarios, selected = "Normal")),
@@ -67,8 +69,8 @@ shinyUI <- fluidPage (
                            ),  
                            
                            fluidRow(
-                             column(8, actionButton("map_onoff", "Show/Hide world map")),
-                             column(2, actionButton("run", "Run"))
+                             column(8, actionButton("map_onoff", "Show/Hide world map", styleclass = "success")),
+                             column(2, actionButton("run", "Run", styleclass = "primary"))
                            ),
                          ),
                          

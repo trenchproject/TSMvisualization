@@ -47,19 +47,23 @@ shinyServer <- function(input, output, session) {
   })
   
   
-  #Method 2: fread from csv
+  # Method 2: fread from csv
   # data_by_org <- eventReactive( input$run,{
-  # 
-  #   org <- input$species_1
-  #   filename <- paste("Data\\",gsub(" ","_",org),"_combined.csv", sep= "")
-  #   df <- data.table::fread(filename)
+  #   
+  #   object <- get_object("Psammodromus_hispanicus", "tsmviz")
+  #   object_data <- readBin(object, "character")
+  #   df <- data.table::fread(text = object_data, stringsAsFactors = FALSE)
+  #   
+  #   # org <- input$species_1
+  #   # filename <- paste("Data\\",gsub(" ","_",org),"_combined.csv", sep= "")
+  #   # df <- data.table::fread(filename)
   #   df$Month <- factor(df$Month, levels = names(month))
   #   df$Hour <- factor(df$Hour, levels = hours)
   #   df$Scenario <- factor(df$Scenario, levels = scenarios)
   #   df
   # }, ignoreNULL = FALSE
   # )
-  
+  # 
   # MAP
   #Method 3: RDS file
   # read the data file of the selected species to make a map
