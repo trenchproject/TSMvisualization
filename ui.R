@@ -1,4 +1,5 @@
-pkgs <- c('pdftools','tidyverse','taxize', 'raster','rgdal','plotly','reshape2','taxize', 'magrittr', 'TrenchR', 'ggplot2','ggridges','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales')
+pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales')
+# 'rgdal', 'TrenchR'
 lapply(pkgs, library, character.only = TRUE)
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
@@ -20,6 +21,7 @@ lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyUI <- fluidPage (
+  tags$head(tags$style(HTML('* {font-family: Calibri;}'))),
   useShinyjs(),
   titlePanel("Climate Change and Lizards"),
   p("Short description of species added up to Sceloporus graciosus"),
@@ -27,7 +29,8 @@ shinyUI <- fluidPage (
   
   h4("What is Thermal Safety Margin (TSM)?"),
   
-  textOutput("introduction"),
+  htmlOutput("introduction"),
+
   br(),
   plotOutput("intro_fig", width = "100%"),
   
