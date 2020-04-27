@@ -1,6 +1,6 @@
-pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky')
+pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'maps','scales', 'shinysky')
 # 'pdftools', 'rgdal', 
-
+# lapply(pkgs, install.packages)
 lapply(pkgs, library, character.only = TRUE)
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
@@ -33,7 +33,7 @@ shinyUI <- fluidPage (
   
   includeHTML("intro.html"),
   br(),
-  #column(12, align="center", plotOutput("intro_fig", width = "100%")),
+  column(12, align="center", plotOutput("intro_fig", width = "100%")),
   
   br(), 
   
