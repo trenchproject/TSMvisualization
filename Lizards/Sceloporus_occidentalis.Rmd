@@ -3,9 +3,11 @@ title: "Sceloporus occidentalis"
 output: html_document
 ---
 
+Common name: Western Fence Lizard
+
 Sceloporus occidentalis
 
 
 <p align='center'>
-<img src="https://lh3.googleusercontent.com/proxy/1kL7qQzgohOPtRpISb38hSg-PxoFqMqjoP6JhzEfVudrGxg7rJaGLigS3J31nUV0GLjSKBM8SfTRsT98Uia3qm3WdYc5hovOtuJqSVk65UNjV3dd5nhgG2zKjd2ZY8EjyiM7e52h5ki4ELTi0Tgu5A", width = 500>
+<img src="https://wildmacro.com/library/animals/western-fence-lizard-sceloporus-occidentalis-occidentalis-ANI0053.jpg", width = 500>
 </p>

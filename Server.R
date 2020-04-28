@@ -9,20 +9,6 @@ lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyServer <- function(input, output, session) {
-  # Introduction figure
-  output$intro_fig <- renderPlot({
-    
-    curve <- TPC(0:50, 35.6, 8.8, 45.5)
-    
-    ggplot() + geom_line(data = NULL, aes(x = c(0:50), y = curve), col = "steelblue", size = 1.1) + xlab("Temperature (°C)") + ylab("Performance") +
-      geom_segment(aes(x = 40.5, y = 0.1, xend = 45.5, yend = 0), size = 1) + geom_text(aes(x = 45.5 - 6, y = 0.14, label = "Tmax"), size = 5) +
-      geom_segment(aes(x = 33, y = 0.72, xend = 45.5, yend = 0.72), arrow = arrow(length = unit(0.4, "cm"), ends = "both"), size = 1) +
-      geom_text(aes(x = 15, y = 0.9, label = "Thermal Safety margin"), size = 6.5) + geom_segment(aes(x = 26, y = 0.88, xend = 39, yend = 0.73), size = 0.8, arrow = arrow(length = unit(0.3, "cm"))) +
-      geom_vline(xintercept = 33, size = 1.2, lty = 5, col = "blue") + geom_text(aes(x = 33 - 1.7, label = "Operative temperature", y = 0.4), size = 5, angle = 90, col = "blue") + theme_classic( ) +
-      geom_rect(aes(xmin = 45.5, xmax = Inf, ymin = -Inf, ymax = Inf), alpha = 0.7, fill = "red") +
-      scale_x_continuous(limits = c(0, 50 + 2), expand = c(0,0)) + scale_y_continuous(limits = c(0, 1.05), expand = c(0,0)) +
-      theme(axis.text = element_text(size = 12), axis.title = element_text(size = 15))
-  }, height = 350, width = 500)
   
   # Brief background information of selected species
   output$species_info <- renderText({
@@ -67,34 +53,31 @@ shinyServer <- function(input, output, session) {
   )
   
   x_variable <- eventReactive( input$run, {
-    switch(input$columns, Month = "Month", Hour = "Hour", Scenario = "Scenario", Shade = "Shade")
+    input$columns
   }, ignoreNULL = FALSE
   )
   
   y_variable <- eventReactive( input$run, {
-    switch(input$rows, Month = "Month", Hour = "Hour", Scenario = "Scenario", Shade = "Shade")
+    input$rows
   }, ignoreNULL = FALSE
   )
   
-  # Title of the map
+  #Title of the map
   title <- eventReactive( input$run, {
-    title_m <- paste("| ", input$month)
-    title_h <- paste("| ", input$hour)
-    title_sc <- paste("| ", input$scenario)
-    title_sh <- paste("| ", input$shade)
-    if (as.character(x_variable()) == "Month" | as.character(y_variable()) == "Month") {
-      title_m <- ""
-    } 
-    if (as.character(x_variable()) == "Hour" | as.character(y_variable()) == "Hour") {
-      title_h <- ""
-    } 
-    if (as.character(x_variable()) == "Scenario" | as.character(y_variable()) == "Scenario") {
-      title_sc <- ""
-    } 
-    if (as.character(x_variable()) == "Shade" | as.character(y_variable()) == "Shade") {
-      title_sh <- ""
-    }     
-    paste(input$species, title_m, title_h, title_sc, title_sh)
+    str <- input$species
+    if (x_variable() != "Month" && y_variable() != "Month") {
+      str <- paste(str, "|", input$month)
+    }
+    if (x_variable() != "Hour" && y_variable() != "Hour") {
+      str <- paste(str, "|", input$hour)
+    }
+    if (x_variable() != "Scenario" && y_variable() != "Scenario") {
+      str <- paste(str, "|", input$scenario)
+    }
+    if (x_variable() != "Shade" && y_variable() != "Shade") {
+      str <- paste(str, "|", input$shade)
+    }
+    str
   }, ignoreNULL = FALSE
   )
   
@@ -120,21 +103,42 @@ shinyServer <- function(input, output, session) {
       scale_fill_manual(name = "Thermal Safety \nMargin (°C)", values = c("(-Inf,0]" = "red", "(0,2]" = "orange", "(2,5]" = "green", "(5, Inf]" = "blue"), 
                         labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
       facet_grid(facet_formula) + coord_quickmap(xlim = c(min(dataInput()$x), max(dataInput()$x)), ylim = c(min(dataInput()$y), max(dataInput()$y)),expand = TRUE) +
-      theme_bw( ) + theme(strip.text = element_text(size = 12)) +
+      theme_bw( ) + theme(strip.text = element_text(size = 12)) + 
+      #theme(plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "#F5F5F5")) +
       theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12),
             legend.title = element_text(size = 12))
   }, height = 650, width = 650)
   
+  
+  step <- eventReactive(input$run,{
+    n = 1
+    if (x_variable() == "Month" | y_variable() == "Month") {
+      n = n * length(input$month)
+    } 
+    if (x_variable() == "Hour" | y_variable() == "Hour") {
+      n = n * length(input$hour)
+    } 
+    if (x_variable() == "Scenario" | y_variable() == "Scenario") {
+      n = n * length(input$scenario)
+    } 
+    if (x_variable() == "Shade" | y_variable() == "Shade"){
+      n = n * length(input$shade)
+    }
+    n
+  }, ignoreNULL = FALSE)
+
+
   output$density <- renderPlot({
     
     facet_formula <- as.formula(paste(x_variable(), "~", y_variable()))
     
     ggplot(dataInput(), aes(x=cut(Tsm, c(-Inf, 0, 2, 5, Inf)), fill = cut(Tsm, c(-Inf, 0, 2, 5, Inf)))) + 
-      geom_bar(aes(y = (..count..)/sum(..count..)*100)) + scale_x_discrete(labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
+      geom_bar(aes(y = (..count..)/sum(..count..)*100*step())) + scale_x_discrete(labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
       xlab("Thermal Safety Margin (°C)") + ylab("Percentage") + ggtitle(title()) + 
       scale_fill_manual(values = c("(-Inf,0]" = "red", "(0,2]" = "orange", "(2,5]" = "green", "(5, Inf]" = "blue")) +
       theme_bw() + facet_grid(facet_formula) + theme(strip.text = element_text(size = 12)) + theme(legend.position = "none") +
-      theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14))
+      theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), plot.background = element_rect(fill = "#F5F5F5"), 
+            panel.background = element_rect(fill = "#F5F5F5"))
   })
   
   
@@ -155,7 +159,8 @@ shinyServer <- function(input, output, session) {
       geom_vline(xintercept = dataTPC(), size = 1.2) + geom_text(aes(x = dataTPC() - 1.7, label = "Operative temperature", y = 0.45), size = 5, angle = 90) + theme_classic( ) +
       geom_rect(aes(xmin = lizards_tpc$Tmax, xmax = Inf, ymin = -Inf, ymax = Inf), alpha = 0.7, fill = "red") +
       scale_x_continuous(limits = c(0,pmax(50, dataTPC())+2), expand = c(0,0)) + scale_y_continuous(limits = c(0, 1.05), expand = c(0,0)) +
-      theme(axis.text = element_text(size = 12), axis.title = element_text(size = 15))
+      theme(axis.text = element_text(size = 12), axis.title = element_text(size = 15), plot.background = element_rect(fill = "#F5F5F5"), 
+            panel.background = element_rect(fill = "azure"))
   })
   
   # PLOT  
@@ -194,7 +199,7 @@ shinyServer <- function(input, output, session) {
         ggtitle(paste(input$species,"|", names(month[as.numeric(input$month_2)]))) + 
         scale_y_discrete(limits = rev(levels(dataInput_2()$Hour)))  + theme_bw() + facet_wrap(~Shade) + theme(strip.text = element_text(size = 12)) +
         theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12),
-              legend.title = element_text(size = 12))
+              legend.title = element_text(size = 12), plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "azure"))
     } else {
       ggplot(dataInput_2(),aes(x=Tsm, y= Hour)) + 
         xlab("Thermal Safety Margin (°C)") + geom_density_ridges2(aes(fill=Shade),rel_min_height = 0.01 ,scale=2,alpha=0.5) + 
@@ -202,7 +207,7 @@ shinyServer <- function(input, output, session) {
         scale_y_discrete(limits = rev(levels(dataInput_2()$Hour)))  + theme_bw() + facet_wrap(~factor(Scenario, levels = scenarios)) + 
         scale_fill_manual(values = c("blue","red")) + theme(strip.text = element_text(size = 12)) +
         theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12),
-              legend.title = element_text(size = 12))
+              legend.title = element_text(size = 12), plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "azure"))
     }
   }, height = 600, width = 600)  
   

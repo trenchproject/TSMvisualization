@@ -1,4 +1,4 @@
-pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky', 'shinythemes', 'shinyWidgets')
+pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky', 'shinythemes', 'shinyWidgets', 'maps')
 # 'pdftools', 'rgdal'
 
 lapply(pkgs, library, character.only = TRUE)
@@ -22,28 +22,25 @@ lizards_tpc <- fread("lizards_tpc.csv")
 
 
 shinyUI <- fluidPage (theme = shinytheme("united"),
-                      busyIndicator(text = "Data processing...", wait = 1000),
-                      #tags$head(tags$style(HTML('* {font-family: Calibri;}'))),
-                      setBackgroundColor(color = "azure"),
                       
-                      tags$head(
-                        tags$style(
-                          HTML("#dashboard{margin-left:500px;}")
-                        )
-                      ),
+                      #tags$head(tags$style(HTML('* {font-family: Calibri;}'))),
+                      setBackgroundColor(color = "#F5F5F5"),
+                      
                       useShinyjs(),
                       
+                      titlePanel(
+                        div(tags$img(src="lizard_pic.png", height = 50), 
+                            "Climate Change and Lizards ")
+                      ),
                       
-                      titlePanel("Climate Change and Lizards"),
-                      p("Short description of species added up to Sceloporus graciosus"),
                       hr(),
                       
                       h3("What is Thermal Safety Margin (TSM)?"),
                       
                       includeHTML("intro.html"),
                       br(),
-                      column(12, align="center", plotOutput("intro_fig", width = "100%")),
-                      
+                      # column(12, align="center", plotOutput("intro_fig", width = "100%")),
+                      column(12, align="center", img(src="Rplot.png", height = 380)),
                       br(), 
                       
                       strong("Select a species and explore their distribution, current status and the risk they may face from increasing temperature."),
@@ -54,7 +51,8 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                       
                       htmlOutput("species_info"),
                       
-                      tabsetPanel(type = "tabs", 
+                      tabsetPanel(type = "tabs",
+                                  
                                   tabPanel("Distribution Map",
                                            sidebarLayout(
                                              sidebarPanel(
@@ -87,10 +85,10 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              
                                              mainPanel(
                                                conditionalPanel(
-                                                 condition = 'input.dist_frac == "Distribution"', fluidRow(column(12, align="center", plotOutput("plot1", width = "100%")))
+                                                 condition = 'input.dist_frac == "Distribution"', fluidRow(column(12, align="center", plotOutput("plot1", width = "100%") %>% withSpinner(type = 7)))
                                                ),
                                                conditionalPanel(
-                                                 condition = 'input.dist_frac == "Fraction"', plotOutput("density")
+                                                 condition = 'input.dist_frac == "Fraction"', plotOutput("density") %>% withSpinner(type = 7)
                                                ),
                                                
                                                br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
@@ -120,7 +118,7 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              
                                              mainPanel(
                                                br(), br(), br(), br(),
-                                               plotOutput("TPC")
+                                               plotOutput("TPC") %>% withSpinner(type = 7)
                                              )
                                            ),
                                            br(),
@@ -131,7 +129,7 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              sidebarPanel(
                                                h3("Plot"),
                                                p("Explore the change in thermal safety margins of the selected species throughout the day in different months."),
-                                               p("The shapes on the plot represent the variation of TSM within the species due to the varying habitats of individuals."),
+                                               p("The shapes on the plot represent the frequency of TSM within the species."),
                                                
                                                radioButtons("facet", label = "Facet", choices = c("Shade", "Scenario"), inline = TRUE),
                                                
@@ -139,7 +137,7 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              ),
                                              
                                              mainPanel(
-                                               column(12, align = "center", plotOutput("plot2", width = "100%"))
+                                               column(12, align = "center", plotOutput("plot2", width = "100%") %>% withSpinner(type = 7))
                                              )
                                            )
                                   ),
@@ -168,7 +166,7 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              mainPanel(
                                                br(),
                                                h4("Mean thermal safety margins across the distibution"),
-                                               htmlOutput("text_data")
+                                               htmlOutput("text_data") %>% withSpinner(type = 7)
                                              )
                                            )
                                   )

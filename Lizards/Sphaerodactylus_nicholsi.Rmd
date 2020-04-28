@@ -1,0 +1,18 @@
+---
+title: "Sphaerodactylus nicholsi"
+output: html_document
+---
+
+*Sphaerodactylus nicholsi* is endemic to southwestern part of Puerto Rico. They can be found in dry coastal forests protected from direct sunlight to avoid the risk of dessication arising from the large surface to volume ratio (López-Ortiz & Lewis, 2004).  
+It is considered to be one of the smallest gecko to be found, and only average about 4cm from head to tail in full growth (Grant, 1931).
+They are brown in color, and have a unique V-shaped pattern at the root of the tail.
+
+
+<p align='center'>
+<img src="https://i.pinimg.com/originals/7d/7e/9d/7d7e9dd98d9807162d2007119caf96a3.jpg", width = 500>
+</p>
+
+References  
+Grant, C. (1931). The sphaerodactyls of Porto Rico, Culebra and Mona Islands. Journal of the Department of Agriculture, Porto Rico 15: 199–213
+
+López-Ortiz, R., & Lewis, A. R. (2004). Habitat selection by Sphaerodactylus nicholsi (Squamata: Gekkonidae) in Cabo Rojo, Puerto Rico. Herpetologica, 60(4), 438-444.
