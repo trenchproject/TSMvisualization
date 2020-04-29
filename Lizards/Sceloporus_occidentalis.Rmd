@@ -5,9 +5,14 @@ output: html_document
 
 Common name: Western Fence Lizard
 
-Sceloporus occidentalis
-
+*Sceloporus occidentalis* are commonly found in the western United States, anywhere from fenceposts, rocks, logs to sides of buildings. They inhabit a variety of habitats except for deserts.  
+Males have blue patches on the throat and sides of belly.   
+Eggs are laid April through July with clutch size of 3 to 17. They primarily prey on insects and spiders.
+(Stebbins, 2003)
 
 <p align='center'>
 <img src="https://wildmacro.com/library/animals/western-fence-lizard-sceloporus-occidentalis-occidentalis-ANI0053.jpg", width = 500>
 </p>
+
+Reference  
+Stebbins, R. (2003). A field guide to western reptiles and amphibians (3rd ed., Peterson field guide series). Boston: Houghton Mifflin.

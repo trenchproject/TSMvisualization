@@ -1,0 +1,19 @@
+---
+title: "Xantusia vigilis"
+output: html_document
+---
+
+Common name; Desert night lizard.  
+*Xantusia vigilis* has a distribution of California, Utah and Arizona, US, and isolated populations in northern Mexico.   
+They can be found in arid and semiarid environments, beneath fallen branches, dead clumps, rocks etc but seldom in the open. 
+Females averages 80mm while males averages 65mm and females are heavier as well.  
+*X. vigilis* is viviparous, and have a brood size of 1-3, which are typically born in August through October.
+
+(Stebbins, 2003)
+
+<p align='center'>
+<img src="http://www.reptilesofaz.org/Graphics/Lizards/XANVIG2-08b.jpg", width = 500>
+</p>
+
+Reference  
+Stebbins, R. (2003). A field guide to western reptiles and amphibians (3rd ed., Peterson field guide series). Boston: Houghton Mifflin.

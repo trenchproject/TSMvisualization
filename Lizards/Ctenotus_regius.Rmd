@@ -5,8 +5,13 @@ output: html_document
 
 
 *Ctenotus regius* is a species of skinks exclusively found in Australia, mostly in arid sandy areas with sparse ground cover.  
-They are medium-sized and fast-moving. Their back has white-edged dark longitudinal stripes and the sides have small white spots. 
+They are medium-sized and fast-moving. Their back has white-edged dark longitudinal stripes and the sides have small white spots. Snout-vent length can be up to 80mm, and females are generally larger than males.  
+Clutch size is about 2 eggs, and breeding occurs between November and February.  
+(Read, 1998)
 
 <p align='center'>
 <img src="https://previews.123rf.com/images/marsipanes/marsipanes1606/marsipanes160600634/58675175-ctenotus-regius-is-a-species-of-saurians-of-the-family-of-cophoscincopus-this-species-is-endemic-to-.jpg", width = 500>
 </p>
+
+Reference  
+Read, J. L. (1998). The ecology of sympatric scincid lizards (Ctenotus) in arid South Australia. Australian Journal of Zoology, 46(6), 617-629.

@@ -3,7 +3,7 @@ title: "Pseudemoia entrecasteauxii"
 output: html_document
 ---
 
-Common name: Southern Grass Skink
+Common name: Southern Grass Skink  
 *Pseudemoia entrecasteauxii* is a species of skink endemic to southern Australia. They prefer forest area and grassland habitats, and usually seen around fallen timber or leaf litter (Cogger, 2014).  
 They are viviparous.
 

@@ -1,9 +1,6 @@
-pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky', 'shinythemes', 'shinyWidgets', 'maps')
+pkgs <- c('shiny', 'tidyverse','taxize', 'raster','plotly','reshape2', 'magrittr', 'ggplot2','ggridges','TrenchR','plotly', 'data.table', 'leaflet', 'shinyjs', 'scales', 'shinysky', 'shinythemes', 'shinyWidgets', 'maps', 'shinycssloaders')
 # 'pdftools', 'rgdal'
-
 lapply(pkgs, library, character.only = TRUE)
-
-#setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/")
 
 month <- c(1:12)
 names(month) <- c("January","February","March","April","May","June","July","August","September","October","November","December")
@@ -11,8 +8,8 @@ scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
 
 org_tpc <- c("Anolis carolinensis", "Ctenotus regius", "Ctenotus taeniolatus", "Ctenotus uber", "Dipsosaurus dorsalis", "Elgaria multicarinata", "Eulamprus kosciuskoi", 
-             "Eulamprus tympanum", "Hemiergis decresiensis", "Lepidophyma flavimaculatum", "Platysaurus intermedius", "Podarcis muralis", "Psammodromus hispanicus", 
-             "Psammodromus algirus", "Pseudemoia entrecasteauxii", "Sceloporus graciosus", "Sceloporus occidentalis", "Sceloporus variabilis", 
+             "Eulamprus tympanum", "Hemiergis decresiensis", "Lepidophyma flavimaculatum", "Platysaurus intermedius", "Podarcis muralis", "Psammodromus algirus", 
+             "Psammodromus hispanicus", "Pseudemoia entrecasteauxii", "Sceloporus graciosus", "Sceloporus occidentalis", "Sceloporus variabilis", 
              "Sphaerodactylus macrolepis", "Sphaerodactylus nicholsi", "Takydromus septentrionalis", "Takydromus sexlineatus", "Uta stansburiana", "Xantusia vigilis")
 org <- c(org_tpc, "Coleonyx brevis")
 

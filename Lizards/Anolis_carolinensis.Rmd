@@ -5,7 +5,7 @@ output: html_document
 
 Common name; Green Anole
 
-*A. carolinensis* is a lizard found in Southeastern United States. They are arboreal but are commonly seen in urban and suburban area as well.  
+*Anolis carolinensis* is a species of lizard found in Southeastern United States. They are arboreal but are commonly seen in urban and suburban area as well.  
 As seen in the picture, males have a pinkish dewlap that is displayed to show aggression or to attract a potential mate. Males are highly territorial and they usually only mate within their territorries. They are polygynous and breed every two weeks from April to August.  
 Both males and females reach sexual maturity in 8 to 9 months, and live up to 8 years.  
 
@@ -17,4 +17,4 @@ Green anoles are traded as pets and are sold in many pet stores in the United St
 </p>
 
 Reference  
-Crawford, Chelsea. (2011). "Anolis carolinensis" Animal Diversity web. https://animaldiversity.org/accounts/Anolis_carolinensis/ Accessed April 09, 2020
+Crawford, Chelsea. (2011). Anolis carolinensis. Animal Diversity web. https://animaldiversity.org/accounts/Anolis_carolinensis/ Accessed April 09, 2020

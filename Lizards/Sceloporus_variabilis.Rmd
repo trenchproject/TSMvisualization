@@ -6,8 +6,7 @@ output: html_document
 Common name: Rose-bellied Lizard.
 
 They reside in North America, namely south Texas to norhteastern Mexico. Their preferred habitat is rocky terrains in arid environment.  
-*S. variabilis* breeds throughout the year and lays 1 to 5 eggs per clutch. They are terrestrial and are known to feed on large insects.
-
+*S. variabilis* breeds throughout the year and lays 1 to 5 eggs per clutch. They are terrestrial and are known to feed on large insects.  
 The common name is based on the fact that males have pink belly patches as can seen in the picture below.
 
 (LaDuc, n.d.)
@@ -16,5 +15,5 @@ The common name is based on the fact that males have pink belly patches as can s
 <img src="https://live.staticflickr.com/8746/28693435391_4cea6ac3ac_b.jpg", width = 500>
 </p>
 
-
+Reference  
 LaDuc, Travis. (n.d.). Rose-bellied lizard. Herps of Texas. https://www.herpsoftexas.org/content/rose-bellied-lizard Accessed Apr. 16, 2020.

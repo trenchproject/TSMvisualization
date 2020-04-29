@@ -3,9 +3,14 @@ title: "Takydromus septentrionalis"
 output: html_document
 ---
 
-Takydromus septentrionalis
-
+*Takydromus septentrionalis*, also known as China grass lizard, are found widely across southern China in grassland and shrubs as the name tells.  
+They are pretty small and ranges about 5.5 - 7.8 cm (snout-vent length) and prey on insects. Males have larger heads than females.  
+This species of lizards are oviparous and give birth to live youngs.  
+(Xiang et al., 1996)
 
 <p align='center'>
 <img src="https://live.staticflickr.com/3644/3296804550_057a1f048a_c.jpg", width = 500>
 </p>
+
+Reference  
+Xiang, J., Weiguo, D., & Pingyue, S. (1996). Body temperature, thermal tolerance and influence of temperature on sprint speed and food assimilation in adult grass lizards, Takydromus septentrionalis. Journal of Thermal Biology, 21(3), 155-161.
