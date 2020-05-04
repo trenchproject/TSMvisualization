@@ -32,18 +32,14 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                       
                       hr(),
                       
-                      h3("What is Thermal Safety Margin (TSM)?"),
-                      
                       includeHTML("intro.html"),
-                      br(),
-                      # column(12, align="center", plotOutput("intro_fig", width = "100%")),
-                      column(12, align="center", img(src="Rplot.png", height = 380)),
+                      
                       br(), 
                       
                       strong("Select a species and explore their distribution, current status and the risk they may face from increasing temperature."),
                       
                       fluidRow(
-                        column(6, selectInput("species", label = "", choices = org_tpc, selected = "Psammodromus hispanicus"))
+                        column(6, selectInput("species", label = "", choices = org, selected = "Psammodromus hispanicus"))
                       ),
                       
                       htmlOutput("species_info"),
@@ -57,9 +53,9 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                                p("Set the variables and hit \"Run\" to take a look at the thermal safety margins of the selected species within their distribution."),
                                                p("Selecting \"Fraction\" will display the percentage of occurence of each TSMs over the entire distribution."),
                                                
-                                               fluidRow(
-                                                 column(10, radioButtons("dist_frac", label = "Show", choices = c("Distribution", "Fraction"), selected = "Distribution"))
-                                               ),
+                                               # fluidRow(
+                                               #   column(10, radioButtons("dist_frac", label = "Show", choices = c("Distribution", "Fraction"), selected = "Distribution"))
+                                               # ),
                                                hr(),
                                                fluidRow(
                                                  column(6,radioButtons("rows", label = "Horizontal facets", choices = variables)),
@@ -81,16 +77,13 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              ),
                                              
                                              mainPanel(
-                                               conditionalPanel(
-                                                 condition = 'input.dist_frac == "Distribution"', fluidRow(column(12, align="center", plotOutput("plot1", width = "100%") %>% withSpinner(type = 7)))
-                                               ),
-                                               conditionalPanel(
-                                                 condition = 'input.dist_frac == "Fraction"', plotOutput("density") %>% withSpinner(type = 7)
-                                               ),
+                                               fluidRow(column(12, plotOutput("plot1", width = "100%", click = "plot_click") %>% withSpinner(type = 7))),
+                                               
+                                               
                                                
                                                br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
-                                               
-                                               
+                                               verbatimTextOutput("info"),
+                                               fluidRow(column(12, plotOutput("density") %>% withSpinner(type = 7))),
                                                column(8, offset = 2, align="center", leafletOutput("mymap")),
                                                
                                                br(),
@@ -114,8 +107,10 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              ),
                                              
                                              mainPanel(
-                                               br(), br(), br(), br(),
-                                               plotOutput("TPC") %>% withSpinner(type = 7)
+                                               conditionalPanel(condition = 'input.species' %in% lizards_tpc$Binomial, 
+                                               #br(), br(), br(), br(),
+                                               plotOutput("TPC") %>% withSpinner(type = 7)),
+                                               conditionalPanel(condition = !('input.species' %in% lizards_tpc$Binomial), p("No Data"))
                                              )
                                            ),
                                            br(),
@@ -137,35 +132,35 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                                column(12, align = "center", plotOutput("plot2", width = "100%") %>% withSpinner(type = 7))
                                              )
                                            )
-                                  ),
-                                  
-                                  tabPanel("Raw Data", 
-                                           sidebarLayout(
-                                             sidebarPanel(
-                                               h3("Raw Data"),
-                                               p("Get the numric data on thermal safety margins here."),
-                                               p("Select \"Annual\" and set TSM to 100 to see all our data."),
-                                               
-                                               hr(),
-                                               
-                                               h5("Show results for"),
-                                               
-                                               selectInput("month_data", label = "Month", choices = c(month, "Annual")),
-                                               
-                                               numericInput("value", label = "TSM Less than", value = 0),
-                                               
-                                               fluidRow(
-                                                 column(6, radioButtons("scenario_data", label = "Scenario", choices = scenarios, selected = "Normal")),
-                                                 column(6, radioButtons("shade_data", label = "Shade", choices = c("Exposed", "Covered"), selected = "Exposed")),
-                                               )
-                                             ),
-                                             
-                                             mainPanel(
-                                               br(),
-                                               h4("Mean thermal safety margins across the distibution"),
-                                               htmlOutput("text_data") %>% withSpinner(type = 7)
-                                             )
-                                           )
                                   )
+                                  
+                                  # tabPanel("Raw Data", 
+                                  #          sidebarLayout(
+                                  #            sidebarPanel(
+                                  #              h3("Raw Data"),
+                                  #              p("Get the numric data on thermal safety margins here."),
+                                  #              p("Select \"Annual\" and set TSM to 100 to see all our data."),
+                                  #              
+                                  #              hr(),
+                                  #              
+                                  #              h5("Show results for"),
+                                  #              
+                                  #              selectInput("month_data", label = "Month", choices = c(month, "Annual")),
+                                  #              
+                                  #              numericInput("value", label = "TSM Less than", value = 0),
+                                  #              
+                                  #              fluidRow(
+                                  #                column(6, radioButtons("scenario_data", label = "Scenario", choices = scenarios, selected = "Normal")),
+                                  #                column(6, radioButtons("shade_data", label = "Shade", choices = c("Exposed", "Covered"), selected = "Exposed")),
+                                  #              )
+                                  #            ),
+                                  #            
+                                  #            mainPanel(
+                                  #              br(),
+                                  #              h4("Mean thermal safety margins across the distibution"),
+                                  #              htmlOutput("text_data") %>% withSpinner(type = 7)
+                                  #            )
+                                  #          )
+                                  # )
                       )
 )

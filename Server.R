@@ -92,8 +92,7 @@ shinyServer <- function(input, output, session) {
     toggle("mymap")
   })
   
-  output$plot1 <- renderPlot({
-    
+  output$plot1 <- renderPlot({    
     facet_formula <- as.formula(paste(x_variable(), "~", y_variable()))
     
     ggplot() +
@@ -104,11 +103,34 @@ shinyServer <- function(input, output, session) {
                         labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
       facet_grid(facet_formula) + coord_quickmap(xlim = c(min(dataInput()$x), max(dataInput()$x)), ylim = c(min(dataInput()$y), max(dataInput()$y)),expand = TRUE) +
       theme_bw( ) + theme(strip.text = element_text(size = 12)) + 
-      #theme(plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "#F5F5F5")) +
+      theme(plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "#F5F5F5")) +
       theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12),
             legend.title = element_text(size = 12))
-  }, height = 650, width = 650)
+    
+    
+  }, height = 600, width = 600)
+    
   
+  # observeEvent(input$plot_click, {
+  #   output$plot1 <- renderPlot({
+  #     facet_formula <- as.formula(paste(x_variable(), "~", y_variable()))
+  #     
+  #     ggplot() +
+  #       borders(fill="grey",colour="black") +
+  #       ggtitle(title()) + xlab("Longitude (°)") + ylab("Latitude (°)") +
+  #       geom_raster(data=dataInput(), aes(x = x, y = y, fill = cut(Tsm, c(-Inf, 0, 2, 5, Inf)))) + 
+  #       scale_fill_manual(name = "Thermal Safety \nMargin (°C)", values = c("(-Inf,0]" = "red", "(0,2]" = "orange", "(2,5]" = "green", "(5, Inf]" = "blue"), 
+  #                         labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
+  #       facet_grid(facet_formula) + coord_quickmap(xlim = c(min(dataInput()$x), max(dataInput()$x)), ylim = c(min(dataInput()$y), max(dataInput()$y)),expand = TRUE) +
+  #       theme_bw( ) + theme(strip.text = element_text(size = 12)) + 
+  #       theme(plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "#F5F5F5")) +
+  #       theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12),
+  #             legend.title = element_text(size = 12)) + 
+  #     geom_label(x = input$plot_click[1], y = input$plot_click[2], label = paste("TSM:", round(colMeans(nearPoints(dataInput(), input$plot_click, xvar = "x", yvar = "y")["Tsm"]), digits = 1), "°C"))
+  #       
+  #   })
+  #       
+  # })
   
   step <- eventReactive(input$run,{
     n = 1
@@ -131,14 +153,40 @@ shinyServer <- function(input, output, session) {
   output$density <- renderPlot({
     
     facet_formula <- as.formula(paste(x_variable(), "~", y_variable()))
-    
-    ggplot(dataInput(), aes(x=cut(Tsm, c(-Inf, 0, 2, 5, Inf)), fill = cut(Tsm, c(-Inf, 0, 2, 5, Inf)))) + 
-      geom_bar(aes(y = (..count..)/sum(..count..)*100*step())) + scale_x_discrete(labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
-      xlab("Thermal Safety Margin (°C)") + ylab("Percentage") + ggtitle(title()) + 
-      scale_fill_manual(values = c("(-Inf,0]" = "red", "(0,2]" = "orange", "(2,5]" = "green", "(5, Inf]" = "blue")) +
-      theme_bw() + facet_grid(facet_formula) + theme(strip.text = element_text(size = 12)) + theme(legend.position = "none") +
+    mx <- max(dataInput()$Tsm)
+    mn <- min(dataInput()$Tsm)
+    p <- ggplot(data = dataInput()) + 
+      geom_density_ridges2(aes(x=Tsm, y=0, fill=Scenario), rel_min_height = 0.01, scale=2, alpha=0.5) +
+      xlab("Thermal Safety Margin (°C)") + ylab("Fraction") + scale_fill_manual(name = "Scenarios", values = c("tan", "tan2", "tan4"), labels = c("Normal", "+ 1.5°C", "+ 2°C")) +
+      #annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = Inf, alpha = 0.2, fill = "red") +
+      scale_x_continuous(expand = c(0,0)) + scale_y_continuous(expand = c(0,0)) +
+      theme_bw() + facet_grid(facet_formula, scales = "free_x") + theme(strip.text = element_text(size = 12)) + theme(legend.position = "none") +
+      theme(legend.position = "right") +
       theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), plot.background = element_rect(fill = "#F5F5F5"), 
-            panel.background = element_rect(fill = "#F5F5F5"))
+            panel.background = element_rect(fill = "azure"), legend.text = element_text(size = 12), legend.title = element_text(size = 12))
+    
+    
+               
+    if (mn < 5) {
+      p <- p + geom_vline(xintercept = -0.1, size = 1.2, col = "red") + geom_segment(aes(x = -Inf, y = 0, xend = -0.1, yend = 0), col = "red", size = 1.2)
+    }
+    if(mx > -8 & mn < 7) {
+      p <- p + geom_vline(xintercept = c(0.1, 1.9), size = 1.2, col = "orange") + geom_segment(aes(x = 0.1, y = 0, xend = 1.9, yend = 0), col = "orange", size = 1.2)
+    }
+    if (mx > 0 & mn < 10) {
+      p <- p + geom_vline(xintercept = c(2.1, 4.9), size = 1.2, col = "green") + geom_segment(aes(x = 2.1, y = 0, xend = 4.9, yend = 0), col = "green", size = 1.2)
+    }
+    if (mx > 0) {
+      p <- p + geom_vline(xintercept = 5.1, size = 1.2, col = "blue") + geom_segment(aes(x = 5.1, y = 0, xend = Inf, yend = 0), col = "blue", size = 1.2)
+    }
+    p
+  })
+  
+  output$info <- renderText({
+    tsm <- round(colMeans(nearPoints(dataInput(), input$plot_click, xvar = "x", yvar = "y")["Tsm"]), digits = 1)
+    tmax <- lizards_tpc[lizards_tpc$Binomial == input$species, "Tmax"]
+    output <- paste("Operative temperature:", tmax - tsm, "°C\nTSM:", tsm, "°C")
+    output
   })
   
   
