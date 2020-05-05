@@ -92,6 +92,26 @@ shinyServer <- function(input, output, session) {
     toggle("mymap")
   })
   
+  # width <- reactive({
+  #   w <- max(dataInput()$x) - min(dataInput()$x)
+  #   h <- max(dataInput()$y) - min(dataInput()$y)
+  #   if (w < h) {
+  #     400
+  #   } else {
+  #     350 * w / h  + 150
+  #   }
+  # })
+  # 
+  # height <- reactive({
+  #   h <- max(dataInput()$y) - min(dataInput()$y)
+  #   w <- max(dataInput()$x) - min(dataInput()$x)
+  #   if (h < w) {
+  #     400
+  #   } else {
+  #     250 * h / w + 50
+  #   }
+  # })
+  
   output$plot1 <- renderPlot({    
     facet_formula <- as.formula(paste(x_variable(), "~", y_variable()))
     
@@ -101,14 +121,16 @@ shinyServer <- function(input, output, session) {
       geom_raster(data=dataInput(), aes(x = x, y = y, fill = cut(Tsm, c(-Inf, 0, 2, 5, Inf)))) + 
       scale_fill_manual(name = "Thermal Safety \nMargin (°C)", values = c("(-Inf,0]" = "red", "(0,2]" = "orange", "(2,5]" = "green", "(5, Inf]" = "blue"), 
                         labels = c("(-Inf,0]" = "< 0", "(0,2]" = "0 - 2", "(2,5]" = "2 - 5", "(5, Inf]" = "5 >")) +
-      facet_grid(facet_formula) + coord_quickmap(xlim = c(min(dataInput()$x), max(dataInput()$x)), ylim = c(min(dataInput()$y), max(dataInput()$y)),expand = TRUE) +
-      theme_bw( ) + theme(strip.text = element_text(size = 12)) + 
-      theme(plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "#F5F5F5")) +
+      facet_grid(facet_formula) + coord_quickmap(xlim = c(min(dataInput()$x), max(dataInput()$x)), ylim = c(min(dataInput()$y), max(dataInput()$y)), expand = TRUE) +
+      theme_bw( ) + theme(strip.text = element_text(size = 12)) + theme(plot.title = element_text(hjust = 0.5)) +
+      #theme(plot.background = element_rect(fill = "#F5F5F5"), panel.background = element_rect(fill = "#F5F5F5")) +
       theme(plot.title = element_text(size = 18), axis.text = element_text(size = 12), axis.title = element_text(size = 14), legend.text = element_text(size = 12),
             legend.title = element_text(size = 12))
     
     
-  }, height = 600, width = 600)
+  }#, height = 600, width = 600
+  )
+
     
   
   # observeEvent(input$plot_click, {

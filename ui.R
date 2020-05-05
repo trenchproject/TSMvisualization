@@ -7,10 +7,12 @@ names(month) <- c("January","February","March","April","May","June","July","Augu
 scenarios <- c("Normal","+1.5 °C","+2 °C")
 hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 AM","09 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM","07 PM","08 PM","09 PM", "10 PM","11 PM")
 
-org_tpc <- c("Anolis carolinensis", "Ctenotus regius", "Ctenotus taeniolatus", "Ctenotus uber", "Dipsosaurus dorsalis", "Elgaria multicarinata", "Eulamprus kosciuskoi", 
+org_done <- c("Sceloporus occidentalis", "Uta stansburiana")
+org_tpc <- c("Anolis carolinensis",
+             "Ctenotus regius", "Ctenotus taeniolatus", "Ctenotus uber", "Dipsosaurus dorsalis", "Elgaria multicarinata", "Eulamprus kosciuskoi", 
              "Eulamprus tympanum", "Hemiergis decresiensis", "Lepidophyma flavimaculatum", "Platysaurus intermedius", "Podarcis muralis", "Psammodromus algirus", 
-             "Psammodromus hispanicus", "Pseudemoia entrecasteauxii", "Sceloporus graciosus", "Sceloporus occidentalis", "Sceloporus variabilis", 
-             "Sphaerodactylus macrolepis", "Sphaerodactylus nicholsi", "Takydromus septentrionalis", "Takydromus sexlineatus", "Uta stansburiana", "Xantusia vigilis")
+             "Psammodromus hispanicus", "Pseudemoia entrecasteauxii", "Sceloporus graciosus", "Sceloporus variabilis", 
+             "Sphaerodactylus macrolepis", "Sphaerodactylus nicholsi", "Takydromus septentrionalis", "Takydromus sexlineatus", "Xantusia vigilis")
 org <- c(org_tpc, "Coleonyx brevis")
 
 variables <- c("Month", "Hour", "Scenario", "Shade")
@@ -39,10 +41,10 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                       strong("Select a species and explore their distribution, current status and the risk they may face from increasing temperature."),
                       
                       fluidRow(
-                        column(6, selectInput("species", label = "", choices = org, selected = "Psammodromus hispanicus"))
+                        column(6, selectInput("species", label = "", choices = list("Thermal info added" = org_done, "Not added" = org), selected = "Sceloporus occidentalis"))
                       ),
                       
-                      htmlOutput("species_info"),
+                      htmlOutput("species_info") %>% withSpinner(type = 7),
                       
                       tabsetPanel(type = "tabs",
                                   
@@ -51,7 +53,7 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              sidebarPanel(
                                                h3("Distribution map"),
                                                p("Set the variables and hit \"Run\" to take a look at the thermal safety margins of the selected species within their distribution."),
-                                               p("Selecting \"Fraction\" will display the percentage of occurence of each TSMs over the entire distribution."),
+                                               p("Click on the map to get a more accurate data on TSM of that location."),
                                                
                                                # fluidRow(
                                                #   column(10, radioButtons("dist_frac", label = "Show", choices = c("Distribution", "Fraction"), selected = "Distribution"))
@@ -77,12 +79,11 @@ shinyUI <- fluidPage (theme = shinytheme("united"),
                                              ),
                                              
                                              mainPanel(
-                                               fluidRow(column(12, plotOutput("plot1", width = "100%", click = "plot_click") %>% withSpinner(type = 7))),
-                                               
-                                               
-                                               
-                                               br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(), br(),
+                                               fluidRow(column(12, plotOutput("plot1", click = "plot_click") %>% withSpinner(type = 7))),
+                                               br(), 
+                                               strong("Operative temperature and TSM of the clicked location"),
                                                verbatimTextOutput("info"),
+                                               strong("Distribution of TSM"),
                                                fluidRow(column(12, plotOutput("density") %>% withSpinner(type = 7))),
                                                column(8, offset = 2, align="center", leafletOutput("mymap")),
                                                
