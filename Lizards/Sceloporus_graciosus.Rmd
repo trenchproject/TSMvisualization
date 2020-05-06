@@ -3,36 +3,29 @@ title: "Sceloporus graciosus"
 output: html_document
 ---
 
-Common name: Sagebrush Lizard.  
-*Sceloporus graciosus* is a common lizard in central to western United States. They are mostly found in sagebrush cover but they also inhabit greasewood and other desert shrubs and sometimes small rocky outcrops as well.  
-Their mating season is spring, and eggs are usually laid in June, which will then hatch in August. They stay inactive during the cold months of the year.
-(Cossel, 1997)
-
-
-
-Rose
-
-prefers a more open habitat 
-
-Seventy percent of
-S. graciosus were found under shrubs, while this
-habitat is 46% of the area. Thus, their results strongly
-suggest that the lizards were selecting specific habitats rather than occurring in proportion to the available habitat. 
-
-
-
-
-
-Sceloporus graciosus
- appears to use radiant energy to raise its
- body temperature since body temperatures
- were consistently higher than either the air
- or substratum temperatures
-
+Common name: Sagebrush Lizard  
 
 <p align='center'>
 <img src="https://calphotos.berkeley.edu/imgs/512x768/0000_0000/0211/0906.jpeg", width = 500>
 </p>
 
-Reference  
+*Sceloporus graciosus* is a common lizard in central to western United States. They are mostly found in sagebrush cover but they also inhabit greasewood and other desert shrubs and sometimes small rocky outcrops as well (Cossel, 1997).  
+
+Research conducted by Guyer and Linder (1985) found that *S. graciosus* had similar cloacal temperatures throughout the daylight hours. They also observed them at rodent burrow entrances during early-morning hours, from which they inferred that the lizards were using the sites overnight.  
+From these observations, they concluded that this species does not emerge until body temperatures reach levels sufficient for activity and that this level is maintained throughout the hours (Guyer & Linder, 1985).
+
+
+References  
 Cossel, John Jr. (1997). Sceloporus graciosus. Digital Atlas of Idaho https://digitalatlas.cose.isu.edu/bio/reptile/main/repfram.htm Accessed Apr. 14, 2020.
+
+Guyer, C., & Linder, A. D. (1985). Thermal ecology and activity patterns of the short-horned lizard (Phrynosoma douglassi) and the sagebrush lizard (Sceloporus graciosus) in southeastern Idaho. The Great Basin Naturalist, 607-614.
+
+
+
+<!-- Their mating season is spring, and eggs are usually laid in June, which will then hatch in August. They stay inactive during the cold months of the year. -->
+
+<!-- Rose -->
+
+<!-- prefers a more open habitat  -->
+
+<!-- Seventy percent of S. graciosus were found under shrubs, while this habitat is 46% of the area. Thus, their results strongly suggest that the lizards were selecting specific habitats rather than occurring in proportion to the available habitat.  -->

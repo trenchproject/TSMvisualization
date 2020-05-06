@@ -5,7 +5,7 @@ hours <- c("12 AM","01 AM","02 AM","03 AM","04 AM","05 AM","06 AM","07 AM","08 A
 
 #setwd("/Volumes/GoogleDrive/Shared Drives/TrEnCh/TSMVisualization/TSMdfs")
 
-lizards_tpc <- fread("lizards_tpc.csv")
+Lepidosauria <- fread("Lepidosauria.csv")
 
 
 shinyServer <- function(input, output, session) {
@@ -206,7 +206,7 @@ shinyServer <- function(input, output, session) {
   
   output$info <- renderText({
     tsm <- round(colMeans(nearPoints(dataInput(), input$plot_click, xvar = "x", yvar = "y")["Tsm"]), digits = 1)
-    tmax <- lizards_tpc[lizards_tpc$Binomial == input$species, "Tmax"]
+    tmax <- Lepidosauria[Lepidosauria$Binomial == input$species, "Tmax"]
     output <- paste("Operative temperature:", tmax - tsm, "°C\nTSM:", tsm, "°C")
     output
   })
@@ -217,17 +217,17 @@ shinyServer <- function(input, output, session) {
     org <- input$species
     filename <- paste("Data/",gsub(" ","_",org),"_combined.rds", sep= "")
     df <- readRDS(filename) %>% filter(Hour %in% input$hour_tpc & Month %in% names(month[as.numeric(input$month_tpc)]) & Scenario %in% input$scenario_tpc & Shade %in% input$shade_tpc)
-    lizards_tpc[lizards_tpc$Binomial == input$species, Tmax] - mean(df$Tsm)
+    Lepidosauria[Lepidosauria$Binomial == input$species, Tmax] - mean(df$Tsm)
   })
   
   output$TPC <- renderPlot({
-    lizards_tpc <- lizards_tpc[lizards_tpc$Binomial == input$species, ]
-    curve <- TPC(0:pmax(50, dataTPC()), lizards_tpc$Topt, as.numeric(as.character(lizards_tpc$tmin)), lizards_tpc$Tmax)
+    Lepidosauria <- Lepidosauria[Lepidosauria$Binomial == input$species, ]
+    curve <- TPC(0:pmax(50, dataTPC()), Lepidosauria$Topt, as.numeric(as.character(Lepidosauria$tmin)), Lepidosauria$Tmax)
     
     ggplot() + geom_line(data = NULL, aes(x = c(0:pmax(50, dataTPC())), y = curve), col = "steelblue", size = 1.2) + xlab("Temperature (°C)") + ylab("Performance") +
-      geom_segment(aes(x = lizards_tpc$Tmax - 5, y = 0.1, xend = lizards_tpc$Tmax, yend = 0), size = 1) + geom_text(aes(x = lizards_tpc$Tmax - 6, y = 0.14, label = "Tmax"), size = 5) +
+      geom_segment(aes(x = Lepidosauria$Tmax - 5, y = 0.1, xend = Lepidosauria$Tmax, yend = 0), size = 1) + geom_text(aes(x = Lepidosauria$Tmax - 6, y = 0.14, label = "Tmax"), size = 5) +
       geom_vline(xintercept = dataTPC(), size = 1.2) + geom_text(aes(x = dataTPC() - 1.7, label = "Operative temperature", y = 0.45), size = 5, angle = 90) + theme_classic( ) +
-      geom_rect(aes(xmin = lizards_tpc$Tmax, xmax = Inf, ymin = -Inf, ymax = Inf), alpha = 0.7, fill = "red") +
+      geom_rect(aes(xmin = Lepidosauria$Tmax, xmax = Inf, ymin = -Inf, ymax = Inf), alpha = 0.7, fill = "red") +
       scale_x_continuous(limits = c(0,pmax(50, dataTPC())+2), expand = c(0,0)) + scale_y_continuous(limits = c(0, 1.05), expand = c(0,0)) +
       theme(axis.text = element_text(size = 12), axis.title = element_text(size = 15), plot.background = element_rect(fill = "#F5F5F5"), 
             panel.background = element_rect(fill = "azure"))

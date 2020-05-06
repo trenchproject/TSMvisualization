@@ -4,22 +4,21 @@ output: html_document
 ---
 
 Common name; Common side-blotched lizard  
-*Uta stansburiana* are distributed from Northern Mexico to southeastern Washington in the United States. They are commonly found in desert washes, sand dune areas, sagebrush flats and boulder rocks (Stebbins, 2003).  
+
+<p align='center'>
+<img src="http://www.reptilesofaz.org/Graphics/Lizards/UTASTA-M.jpg", width = 500>
+</p>
+
+*Uta stansburiana* is distributed from Northern Mexico to southeastern Washington in the United States. They are commonly found in desert washes, sand dune areas, sagebrush flats and boulder rocks (Stebbins, 2003).  
 Studies done by Davis and Verbeek (1972) showed that *U. stansburiana* responds to high temperature in a variety of ways. Some shifted to the side of the rocks away from the sun to be in the shade. When sun is high, they placed themselves in a vertical position and extended their legs so that their ventral surfaces were away from the substrate. Others would simply move to a shelter beneath the rock perch or using an insect or a rodent burrow.  
 Body color becoming paler was observed as well (Davis & Verbeek, 1972).  
-
-Uta has a much shorter time in which to mature, and any climatic factor(s) which would cut into this time would be much more critical
-
-
-
+Another important foundings was that this species has a short time in which to mature, which means that any climatic factors which would cut into this time would be critical (Davis & Verbeek, 1972).
 
 One interesting fact about this lizard is that the males have three different throat colors; orange, blue or yellow depending on the individual. Since the most rare morph has the advantage over the others, none of the coloration is dominant, and the abudunce of color varies each year (Barreto et al., 2017).  
 <!-- They lay eggs March through August, and the clutch size ranges from 1 to 8 (Stebbins, 2003). -->
 <!-- Their snout-vent length measures up to 6cm. -->
 
-<p align='center'>
-<img src="http://www.reptilesofaz.org/Graphics/Lizards/UTASTA-M.jpg", width = 500>
-</p>
+
 
 References  
 Barreto, W. P., Marquitti, F. M., & de Aguiar, M. A. (2017). A genetic approach to the rock-paper-scissors game. Journal of theoretical biology, 421, 146-152.

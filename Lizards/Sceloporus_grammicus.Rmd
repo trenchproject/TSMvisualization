@@ -1,0 +1,31 @@
+---
+title: "Sceloporus grammicus"
+output: html_document
+---
+
+
+
+<p align='center'>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Sceloporus_grammicus_male.JPG/1200px-Sceloporus_grammicus_male.JPG", width = 500>
+</p>
+
+Sceloporus grammicus is a widely distributed lizard species that inhabits a variety of ecosystems, mainly in Mexico.
+
+
+Sceloporus
+grammicus maintains a lower field Tb than most other Sceloporus species, including other montane species
+
+
+flattened their body against warm rock surfaces in an
+attempt to obtain warmth from them, as well as from solar
+radiation. 
+
+
+Rock
+crevices in immediate proximity to basking sites provide
+ample places to meet both thermoregulatory and predatoravoidance needs
+
+
+lizards at Laguna live in a pine forest
+with considerable shade that is constantly changing throughout the day. Thermoregulation requires constant movements
+to sunny spots

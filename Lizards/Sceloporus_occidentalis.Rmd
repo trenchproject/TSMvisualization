@@ -11,7 +11,7 @@ Common name: Western fence lizard
 
 *Sceloporus occidentalis* is commonly found in the western United States, anywhere from fenceposts, rocks, logs to sides of buildings (Stebbins, 2003).  
 It is often semi-terrestrial, occupying rocks or fallen trees or limbs, but it is also partly arboreal in many parts of its range.  
-They tend to choose rocks near trees and under canopy for thier primary habitat, and  on trees under high temperatures. The proximity of the rocks to the tree also enables them to escape up a nearby tree under danger or disturbance (Davis & Verbeek, 1972).
+They tend to choose rocks near trees and under canopy for thier primary habitat, but move to trees under high temperatures as shown in the figure below. The proximity of the rocks to the tree also enables them to escape up a nearby tree under danger or disturbance (Davis & Verbeek, 1972).
 
 <p align='center'>
 <img src="S.occidentalis.png", width = 500>

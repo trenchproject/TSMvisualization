@@ -1,0 +1,22 @@
+---
+title: "Phrynosoma douglasii"
+output: html_document
+---
+
+Common name: Short-horned lizard  
+
+<p align='center'>
+<img src="https://calphotos.berkeley.edu/imgs/512x768/0000_0000/0210/2239.jpeg", width = 500>
+</p>
+
+*Phrynosoma douglasii* is a species of lizards that ranges from southwestern Canada to northwestern United States, and are capable of living in high altitudes.  
+
+Studies done by Guyer and Linder (1985) showed that this species' body temperatures greatly varied during the day, with reduced temperatures during early and late hours of the day. In fact, paper published by Pianka and Parker (1975) states that the variability of cloacal temperature to be greater than that of any other North American iguanid. They showed that lizards of this genus are typically active earlier and later, and over a longer time span, than most other sympatric species of lizards as well.  
+They attribute this to relaxed thermoregulation. They have a notably low critical thermal minimum as a product of their adaptation to high altitudes, and leave only one other iguanid reported to be able to stay active at body temperatures nearly as low, which is *Liolaemus multiformis* inhabiting southern Peru (Prieto & Whitford, 1971). *P. douglasii* is capable of movement at body temperatures nearly as low as those tolerated by a species living at 4575 m.  
+As a matter of fact, they were never observed using rodent burrows or burrowing under loose soil even at night (Guyer & Linder, 1985). Instead, they expedite their morning rise in cloacal temperature by placing themselves in the warmest and fastest heating microhabitat.  
+On the other hand, their critical thermal maximum is relatively low.
+
+Reference  
+Guyer, C., & Linder, A. D. (1985). Thermal ecology and activity patterns of the short-horned lizard (Phrynosoma douglassi) and the sagebrush lizard (Sceloporus graciosus) in southeastern Idaho. The Great Basin Naturalist, 607-614.
+
+Prieto, A., & Whitford, W. (1971). Physiological Responses to Temperature in the Horned Lizards, Phrynosoma cornutum and Phrynosoma douglassii. Copeia, 1971(3), 498-504.
